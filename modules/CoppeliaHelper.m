@@ -4,36 +4,45 @@ classdef CoppeliaHelper
     properties
         sim;				% File-descriptor-like object to manage connection
         clientID;			% The client ID associated to this connection
-        robot_joints = []	% List of joint handles
+        joints_num_handle = []	% List of joint handles
         sampling_time;		% Sampling time of the simulation
     end
     
     methods
-        function obj = CoppeliaHelper(port, sampling_time)
+        function obj = CoppeliaHelper(sampling_time)
+            % Starts a connection to Collelia Sim
             obj.sampling_time = sampling_time;	
 
-            addpath vrep_lib/;
-            obj.sim = remApi('remoteApi');
-            % End all active communication threads
-            obj.sim.simxFinish(-1);
-            % Start a new communication thread (blocking call)
-            obj.clientID = obj.sim.simxStart('127.0.0.1', port, true, true, 5000, 5);
-            % Inform of the connection result
-            if (obj.clientID > -1)
-                disp('Connected to simulator');
-            else
-                disp('Error in connection');
-            end
+            addpath('vrep_lib/');
+            client = RemoteAPIClient();
+            obj.sim = client.require('sim');
             % Enable the synchronous mode on the client: (integration step on call)
-            obj.sim.simxSynchronous(obj.clientID, true);
-            % Start the simulation (and block communications until reply received)
-            obj.sim.simxStartSimulation(obj.clientID, obj.sim.simx_opmode_blocking);
+            obj.sim.setStepping(true);
+            % Start the simulation
+            obj.sim.startSimulation();
+            
+            % Retrieve the object handles associated to each joint
+            obj.joints_num_handle = zeros(1, 7);
             for i = 1:7 
-                [~,obj.robot_joints(i)] = obj.sim.simxGetObjectHandle(obj.clientID, strcat('LBRiiwa14R820_joint',int2str(i)), obj.sim.simx_opmode_blocking);
+                obj.joints_num_handle(i) = obj.sim.getObject(strcat('/LBR4p_joint',int2str(i)));
             end
-        
-            for i = 1:7
-                [~, joint_pos] = obj.sim.simxGetJointPosition(obj.clientID, obj.robot_joints(i), obj.sim.simx_opmode_streaming);
+            
+            % Retrieve the position of each joint
+            % for i = 1:7
+            %     [~, joint_pos] = obj.sim.getJointPosition(obj.joints_num_handle(i));
+            % end
+        end
+
+        function endConnection(obj)
+            obj.sim.stopSimulation();
+        end
+
+        function commandTorque(obj, torques)
+            % Commands the given torques to the robot.
+            % torques: an array with a size equal to the number of joints,
+            %  containing at position i the torque to command to joint i.
+            for i=1:7
+                obj.sim.setJointTargetForce(obj.joints_num_handle(i), torques(i))
             end
         end
     end

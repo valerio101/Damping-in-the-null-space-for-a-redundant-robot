@@ -34,16 +34,10 @@ kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
 
 % % Compute the kinetic energy T
 kinEn = compute_kin_en(kuka_lbr_4p_dh_table, centersOfMass_rfi, masses, inertiaMatrices, num2cell(joints_vel));
-% DEBUG kinEn = simplify(kinEn);
 
 % Get the symbolic expression of M and c from T
 M = get_m_from_kin_en(kinEn, joints_vel);
-% DEBUG M = simplify(get_m_from_kin_en(kinEn, joints_vel));
-% DEBUG save('./kuka_lbr4p_m.mat', 'M')
-% DEBUG M = load('./kuka_lbr4p_m.mat').M;
-% DEBUG c = simplify(get_coriolis_mat_from_m(M, joints_pos, joints_vel));
 c = get_coriolis_mat_from_m(M, joints_pos, joints_vel);
-% DEBUG save('./kuka_lbr4p_c.mat', 'c')
 
 % Compute the DH matrices from RF0 to RF_i
 dh_mats = cell(num_joints, 1);
@@ -67,6 +61,5 @@ end
 
 % Get the symbolic expression of g
 g_q = simplify(jacobian(U, joints_pos))';
-% DEBUG save('./kuka_lbr4p_g.mat', 'g_q')
 end
 

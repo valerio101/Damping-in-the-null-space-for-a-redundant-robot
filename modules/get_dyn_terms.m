@@ -6,8 +6,8 @@ g0 = 9.8;
 
 % Define the symbolic variables of joint's position and velocity to compute the
 num_joints = 7;
-joints_pos = sym('q', [1 num_joints], 'real');
-joints_vel = sym('q_dot', [1 num_joints], 'real');
+joints_pos = sym('q', [num_joints 1], 'real');
+joints_vel = sym('q_dot', [num_joints 1], 'real');
 
 % Initialize the cell of the CoM vectors (wrt RF_i)
 % Initialize the cell of Inertia matrices of links
@@ -34,11 +34,16 @@ kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
 
 % % Compute the kinetic energy T
 kinEn = compute_kin_en(kuka_lbr_4p_dh_table, centersOfMass_rfi, masses, inertiaMatrices, num2cell(joints_vel));
-kinEn = simplify(kinEn);
+% DEBUG kinEn = simplify(kinEn);
 
 % Get the symbolic expression of M and c from T
-M = simplify(get_m_from_kin_en(kinEn, joints_vel));
-c = simplify(get_coriolis_mat_from_m(M, joints_pos, joints_vel));
+M = get_m_from_kin_en(kinEn, joints_vel);
+% DEBUG M = simplify(get_m_from_kin_en(kinEn, joints_vel));
+% DEBUG save('./kuka_lbr4p_m.mat', 'M')
+% DEBUG M = load('./kuka_lbr4p_m.mat').M;
+% DEBUG c = simplify(get_coriolis_mat_from_m(M, joints_pos, joints_vel));
+c = get_coriolis_mat_from_m(M, joints_pos, joints_vel);
+% DEBUG save('./kuka_lbr4p_c.mat', 'c')
 
 % Compute the DH matrices from RF0 to RF_i
 dh_mats = cell(num_joints, 1);
@@ -62,5 +67,6 @@ end
 
 % Get the symbolic expression of g
 g_q = simplify(jacobian(U, joints_pos))';
+% DEBUG save('./kuka_lbr4p_g.mat', 'g_q')
 end
 

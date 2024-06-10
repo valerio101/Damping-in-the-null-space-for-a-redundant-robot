@@ -28,6 +28,9 @@ classdef KukaLbr4pRobot
         M_num;
         c_num;
         g_num;
+
+        % The DH homogeneus matrix from RF0 to RF_ee (RF on the e.e.)
+        A0e;
     end
 
     methods
@@ -58,9 +61,12 @@ classdef KukaLbr4pRobot
             ];
         end
 
-        function [obj, j] = get_jacobian(obj)
-            % Returns the Jacobian of f(q) w.r.t. q.
-            if isempty(obj.j)
+        function [obj, f_q] = compute_direct_kinematics(obj, curr_joint_pos)
+            % compute_direct_kinematics: Returns the position and orientation of the e.e. wrt RF0.
+            % If curr_joint_pos is given, the position and orientation of the e.e. are computed
+            % in the given configuration.
+            if isempty(obj.A0e)
+                % Compute A0e if not computed yet
                 A0e = eye(4);
                 for i=1:obj.num_joints
                     A0e = A0e * dh_mat_from_table( ...
@@ -69,10 +75,54 @@ classdef KukaLbr4pRobot
                         obj.kuka_lbr_4p_dh_table(i, 3), ...
                         obj.kuka_lbr_4p_dh_table(i, 4));
                 end
-                j = jacobian(A0e, q);
+
+                obj.A0e = A0e;
+            end
+
+            if exist('curr_joint_pos','var')
+                % Compute f(q) in the current configuration
+                f_q = subs(obj.A0e, obj.joints_pos, curr_joint_pos);
+            else
+                f_q = obj.A0e;
+            end
+        end
+
+        function [obj, j] = get_jacobian(obj, curr_joint_pos)
+            % get_jacobian: Returns the Jacobian of f(q) (the e.e. position) w.r.t. q.
+            % If curr_joint_pos is given, the Jacobian is computed in the given configuration.
+            if isempty(obj.j)
+                [~, A0e] = obj.compute_direct_kinematics();
+                j = jacobian(A0e(1:3, 4), obj.joints_pos);
                 obj.j = j;
             end
-            j = obj.j;
+
+            if exist('curr_joint_pos','var')
+                % Compute the Jacobian in the current configuration
+                j = subs(obj.j, obj.joints_pos, curr_joint_pos);
+            else
+                j = obj.j;
+            end
+        end
+
+        function [J_dot] = get_j_dot(obj)
+            % get_j_dot: Returns J_dot(q), the derivative wrt time of J(q).
+
+            % [~, j] = obj.get_jacobian();  % DEBUG
+            j = [[cos(obj.joints_pos(1)), sin(obj.joints_pos(1))]; [sin(obj.joints_pos(1))*obj.joints_pos(1), cos(obj.joints_pos(1))]];
+            
+            t = sym('t', 'real');
+            temp_vars = sym(zeros(obj.num_joints, 1));
+            for i=1:obj.num_joints
+                temp_vars(i) = str2sym("q_" + int2str(i) + "_temp(t)");
+            end
+            
+            % Differentiate J wrt time (t)
+            j = subs(j, obj.joints_pos, temp_vars);
+            % j_dot = jacobian(j, joint_pos_time);
+            j_dot = diff(j, t);
+
+            % Replace the tempora 
+            
         end
 
         function [obj, M, c, g_q] = get_dyn_terms(obj, compute)
@@ -139,13 +189,21 @@ classdef KukaLbr4pRobot
         end  
 
         function [obj, M_num, c_num, g_num] = get_numerical_dyn_terms(obj)
-            [M, c, g] = obj.get_dyn_terms();
+        % get_numerical_dyn_terms: Returns the numerical form of the
+        % dynamic terms (M, c, g) with dependancy only on q and q_dot.
+            if ~isempty(obj.M) && ~isempty(obj.c) && ~isempty(obj.g)
+                M = obj.M;
+                c = obj.c;
+                g_q = obj.g;
+                return
+            end
 
-            vals = load('./resources/paper_vals.mat');
-            vals = vals.d;
+            [~, M, c, g] = obj.get_dyn_terms();
+
+            vals = load('./resources/paper_vals.mat').d;
 
             % Get the numerical values of the masses
-            num_masses = zeros(obj.num_joints);
+            num_masses = zeros(1, obj.num_joints);
             for i=1:obj.num_joints
                 mass_key = strcat("m", int2str(i));
                 num_masses(i) = vals(mass_key);
@@ -163,18 +221,39 @@ classdef KukaLbr4pRobot
             for i=1:obj.num_joints
                 I_i_xx = strcat("I", int2str(i), ',1_1');
                 I_i_xy = strcat("I", int2str(i), ',1_2');
-                I_i_xx = strcat("I", int2str(i), ',1_3');
+                I_i_xz = strcat("I", int2str(i), ',1_3');
                 I_i_yy = strcat("I", int2str(i), ',2_2');
                 I_i_yz = strcat("I", int2str(i), ',2_3');
                 I_i_zz = strcat("I", int2str(i), ',3_3');
-                num_inertia_mat{i} = [[I_i_xx, I_i_xy, I_i_xz];
-                                    [I_i_xy, I_i_yy, I_i_yz];
-                                    [I_i_xz; I_i_yz,I_i_zz]];
+                num_inertia_mat{i} = [
+                    [vals(I_i_xx), vals(I_i_xy), vals(I_i_xz)];
+                    [vals(I_i_xy), vals(I_i_yy), vals(I_i_yz)];
+                    [vals(I_i_xz), vals(I_i_yz), vals(I_i_zz)]
+                ];
             end
             
 
+            % Replace the symbolic vars with the associated numerical vals
+            M_num = subs(M, obj.masses, num_masses);
+            M_num = subs(M_num, obj.centersOfMass_rfi, num_com_rfi);
+            for i=1:obj.num_joints
+                M_num = subs(M_num, obj.inertiaMatrices{i}, num_inertia_mat{i});
+            end
+            obj.M_num = M_num;
 
-            % [M_num, c_num, g_num] = subs([M, c, g])
+            c_num = subs(c, obj.masses, num_masses);
+            c_num = subs(c_num, obj.centersOfMass_rfi, num_com_rfi);
+            for i=1:obj.num_joints
+                c_num = subs(c_num, obj.inertiaMatrices{i}, num_inertia_mat{i});
+            end
+            obj.c_num = c_num;
+
+            g_num = subs(g, obj.masses, num_masses);
+            g_num = subs(g_num, obj.centersOfMass_rfi, num_com_rfi);
+            for i=1:obj.num_joints
+                g_num = subs(g_num, obj.inertiaMatrices{i}, num_inertia_mat{i});
+            end
+            obj.g_num = g_num;
         end
     end
 end

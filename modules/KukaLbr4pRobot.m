@@ -18,6 +18,8 @@ classdef KukaLbr4pRobot
            
         % The Jacobian of f(q) w.r.t q
         j;
+        % The derivate of the Jacobian w.r.t time
+        j_dot;
         % The robot inertia matrix
         M;
         % The matrix of coriolis and centrifugal acceleration terms
@@ -28,6 +30,9 @@ classdef KukaLbr4pRobot
         M_num;
         c_num;
         g_num;
+
+        % The DH homogeneus matrix from RF0 to RF_ee (RF on the e.e.)
+        A0e;
     end
 
     methods
@@ -58,9 +63,12 @@ classdef KukaLbr4pRobot
             ];
         end
 
-        function [obj, j] = get_jacobian(obj)
-            % Returns the Jacobian of f(q) w.r.t. q.
-            if isempty(obj.j)
+        function [obj, f_q] = compute_direct_kinematics(obj, curr_joint_pos)
+            % compute_direct_kinematics: Returns the position and orientation of the e.e. wrt RF0.
+            % If curr_joint_pos is given, the position and orientation of the e.e. are computed
+            % in the given configuration.
+            if isempty(obj.A0e)
+                % Compute A0e if not computed yet
                 A0e = eye(4);
                 for i=1:obj.num_joints
                     A0e = A0e * dh_mat_from_table( ...
@@ -69,10 +77,68 @@ classdef KukaLbr4pRobot
                         obj.kuka_lbr_4p_dh_table(i, 3), ...
                         obj.kuka_lbr_4p_dh_table(i, 4));
                 end
-                j = jacobian(A0e, q);
+
+                obj.A0e = A0e;
+            end
+
+            if exist('curr_joint_pos','var')
+                % Compute f(q) in the current configuration
+                f_q = subs(obj.A0e, obj.joints_pos, curr_joint_pos);
+            else
+                f_q = obj.A0e;
+            end
+        end
+
+        function [obj, j] = get_jacobian(obj, curr_joint_pos)
+            % get_jacobian: Returns the Jacobian of f(q) (the e.e. position) w.r.t. q.
+            % If curr_joint_pos is given, the Jacobian is computed in the given configuration.
+            if isempty(obj.j)
+                [~, A0e] = obj.compute_direct_kinematics();
+                j = jacobian(A0e(1:3, 4), obj.joints_pos);
                 obj.j = j;
             end
-            j = obj.j;
+
+            if exist('curr_joint_pos','var')
+                % Compute the Jacobian in the current configuration
+                j = subs(obj.j, obj.joints_pos, curr_joint_pos);
+            else
+                j = obj.j;
+            end
+        end
+
+        function [obj, J_dot] = get_j_dot(obj, curr_joint_pos, curr_joint_vel)
+            % get_j_dot: Returns J_dot(q), the derivative wrt time of J(q).
+            % If curr_joint_pos and curr_joint_vel are given, J_dot is computed in the given configuration.
+
+            if isempty(obj.j_dot)
+                % Compute J_dot as it has not been computed yet
+                [~, j] = obj.get_jacobian();
+                
+                % Replace q_i vars with time-dependant vars
+                t = sym('t', 'real');
+                temp_vars = sym(zeros(obj.num_joints, 1));
+                for i=1:obj.num_joints
+                    temp_vars(i) = str2sym("q" + int2str(i) + "_temp(t)");
+                end
+                
+                % Differentiate J wrt time (t)
+                j = subs(j, obj.joints_pos, temp_vars);
+                j_dot = diff(j, t);
+
+                % Replace the temporal vars with the original ones
+                j_dot = subs(j_dot, diff(temp_vars), obj.joints_vel);
+                j_dot = subs(j_dot, temp_vars, obj.joints_pos);
+
+                obj.j_dot = j_dot;
+            end
+
+            if exist('curr_joint_pos','var') && exist('curr_joint_vel','var')
+                % Compute the Jacobian in the current configuration
+                j_dot = subs(obj.j_dot, obj.joints_pos, curr_joint_pos);
+                j_dot = subs(j_dot, obj.joints_vel, curr_joint_vel);
+            else
+                j_dot = obj.j_dot;
+            end
         end
 
         function [obj, M, c, g_q] = get_dyn_terms(obj, compute)

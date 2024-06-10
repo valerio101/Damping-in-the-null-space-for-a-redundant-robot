@@ -1,5 +1,5 @@
 classdef KukaLbr4pRobot
-    %% KukaLbr4pRobot: A class that defines all the parameters and methods related to the functioning of
+    % KukaLbr4pRobot: A class that defines all the parameters and methods related to the functioning of
     %  a KUKA LBR 4+ robot.
     properties
         num_joints = 7;
@@ -205,12 +205,26 @@ classdef KukaLbr4pRobot
         end  
 
         function [obj, M_num, c_num, g_num] = get_numerical_dyn_terms(obj)
-        % get_numerical_dyn_terms: Returns the numerical form of the
-        % dynamic terms (M, c, g) with dependancy only on q and q_dot.
-            if ~isempty(obj.M) && ~isempty(obj.c) && ~isempty(obj.g)
-                M = obj.M;
-                c = obj.c;
-                g_q = obj.g;
+            % get_numerical_dyn_terms: Returns the numerical form of the
+            % dynamic terms (M, c, g) with dependancy only on q and q_dot.
+            % compute: Optional parameter (=False). If set to true, when the dyn terms have not been computed yet,
+            % they are computed at the method invokation. Otherwise they are loaded from memory.
+            if ~isempty(obj.M_num) && ~isempty(obj.c_num) && ~isempty(obj.g_num)
+                M_num = obj.M_num;
+                c_num = obj.c_num;
+                g_num = obj.g_num;
+                return
+            elseif ~exist('compute','var') || compute == 0
+                mem_file = load("./resources/kuka_lbr4p_dyn_terms_num.mat");
+
+                M_num = mem_file.M_num;
+                obj.M_num = M_num;
+                
+                c_num = mem_file.c_num;
+                obj.c_num = c_num;
+
+                g_num = mem_file.g_num;
+                obj.g_num = g_num;
                 return
             end
 

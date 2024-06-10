@@ -139,6 +139,15 @@ classdef KukaLbr4pRobot
         end  
 
         function [obj, M_num, c_num, g_num] = get_numerical_dyn_terms(obj)
+        % get_numerical_dyn_terms: Returns the numerical form of the
+        % dynamic terms (M, c, g) with dependancy only on q and q_dot.
+            if ~isempty(obj.M) && ~isempty(obj.c) && ~isempty(obj.g)
+                M = obj.M;
+                c = obj.c;
+                g_q = obj.g;
+                return
+            end
+
             [~, M, c, g] = obj.get_dyn_terms();
 
             vals = load('./resources/paper_vals.mat').d;

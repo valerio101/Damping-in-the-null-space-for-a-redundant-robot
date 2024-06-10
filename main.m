@@ -1,13 +1,9 @@
-addpath(genpath("/Users/salvatore/Desktop/Università/Development/Robotics/functions/dh"))
-addpath(genpath("/Users/salvatore/Desktop/Università/Development/Robotics/functions/rotations"))
-addpath(genpath("/Users/salvatore/Desktop/Università/Development/Robotics/functions/utils"))
-addpath(genpath("/Users/salvatore/Desktop/Università/Development/Robotics/functions/inv_kin"))
-addpath(genpath("/Users/salvatore/Desktop/Università/Development/Robotics/functions/dyn_model"))
-addpath(genpath("/Users/salvatore/Desktop/Università/Development/Robotics/functions/redundancy"))
-addpath("modules/")
-
 clear;
 clc;
+
+addpath("dependancies/");
+addpath("modules/")
+
 
 SAMPLING_TIME = 0.05;
 

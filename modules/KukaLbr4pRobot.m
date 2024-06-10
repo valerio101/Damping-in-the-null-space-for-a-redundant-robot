@@ -106,7 +106,7 @@ classdef KukaLbr4pRobot
             end
         end
 
-        function [obj, J_dot] = get_j_dot(obj, curr_joint_pos, curr_joint_vel)
+        function [obj, j_dot] = get_j_dot(obj, curr_joint_pos, curr_joint_vel)
             % get_j_dot: Returns J_dot(q), the derivative wrt time of J(q).
             % If curr_joint_pos and curr_joint_vel are given, J_dot is computed in the given configuration.
 

@@ -1,0 +1,180 @@
+classdef KukaLbr4pRobot
+    %% KukaLbr4pRobot: A class that defines all the parameters and methods related to the functioning of
+    %  a KUKA LBR 4+ robot.
+    properties
+        num_joints = 7;
+        % Gravitational acceleration
+        g0 = 9.8;
+        % d_i params of the DH table
+        d1 = 0.4;  % meters, according to paper
+        d2 = 0.39;  % meters, according to paper
+
+        joints_pos;
+        joints_vel;
+        inertiaMatrices;
+        centersOfMass_rfi;
+        masses;
+        kuka_lbr_4p_dh_table;
+           
+        % The Jacobian of f(q) w.r.t q
+        j;
+        % The robot inertia matrix
+        M;
+        % The matrix of coriolis and centrifugal acceleration terms
+        c;
+        % The gravity vector
+        g;
+        % The numerical form of the dynamic terms
+        M_num;
+        c_num;
+        g_num;
+    end
+
+    methods
+        function obj = KukaLbr4pRobot()
+            % Define the symbolic variables of joint's position and velocity to compute the
+            obj.joints_pos = sym('q', [obj.num_joints 1], 'real');
+            obj.joints_vel = sym('q_dot', [obj.num_joints 1], 'real');
+            
+            % Initialize the cell of the CoM vectors (wrt RF_i)
+            % Initialize the cell of Inertia matrices of links
+            obj.inertiaMatrices = cell(obj.num_joints, 1);
+            obj.centersOfMass_rfi = sym(zeros(3, obj.num_joints));
+            for i=1:obj.num_joints
+                obj.centersOfMass_rfi(1:3, i) = sym(sprintf('r%d_', i), [1 3], 'real')';
+                obj.inertiaMatrices{i} = generate_symb_inertia_mat(sprintf('I%d_', i), 3);
+            end
+            obj.masses = sym('m', [1 obj.num_joints], 'real');
+
+            % The DH table associated to Kuka LBR4+
+            obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
+                    [0, sym(pi)/2,  0,  obj.joints_pos(1)];
+                    [0, -sym(pi)/2,  0,  obj.joints_pos(2)];
+                    [0, -sym(pi)/2,  obj.d1,  obj.joints_pos(3)];
+                    [0, sym(pi)/2,  0,  obj.joints_pos(4)];
+                    [0, sym(pi)/2,  obj.d2,  obj.joints_pos(5)];
+                    [0, -sym(pi)/2,  0,  obj.joints_pos(6)];
+                    [0, 0,  0,  obj.joints_pos(7)];
+            ];
+        end
+
+        function [obj, j] = get_jacobian(obj)
+            % Returns the Jacobian of f(q) w.r.t. q.
+            if isempty(obj.j)
+                A0e = eye(4);
+                for i=1:obj.num_joints
+                    A0e = A0e * dh_mat_from_table( ...
+                        obj.kuka_lbr_4p_dh_table(i, 1), ...
+                        obj.kuka_lbr_4p_dh_table(i, 2), ...
+                        obj.kuka_lbr_4p_dh_table(i, 3), ...
+                        obj.kuka_lbr_4p_dh_table(i, 4));
+                end
+                j = jacobian(A0e, q);
+                obj.j = j;
+            end
+            j = obj.j;
+        end
+
+        function [obj, M, c, g_q] = get_dyn_terms(obj, compute)
+            %GET_DYN_TERMS Computes the dynamic terms (matrix M(q),
+            % c(q, q_dot), g(q)) of the KUKA LBR 4+ in symbolic form.
+            % compute: Optional parameter (=False). If set to true, when the dyn terms have not been computed yet,
+            % they are computed from the kinetic energy expression. Otherwise they are loaded from memory.
+
+            if ~isempty(obj.M) && ~isempty(obj.c) && ~isempty(obj.g)
+                M = obj.M;
+                c = obj.c;
+                g_q = obj.g;
+                return
+            elseif ~exist('compute','var') || compute == 0
+                M = load("./resources/kuka_lbr4p_m.mat").M;
+                obj.M = M;
+
+                c = load("./resources/kuka_lbr4p_c.mat").c;
+                obj.c = c;
+
+                g_q = load("./resources/kuka_lbr4p_g.mat").g_q;
+                obj.g = g_q;
+                return
+            end
+
+            % Compute the kinetic energy T
+            kinEn = compute_kin_en(obj.kuka_lbr_4p_dh_table, ...
+                obj.centersOfMass_rfi, obj.masses, obj.inertiaMatrices, ...
+                num2cell(obj.joints_vel));
+            
+            % Get the symbolic expression of M and c from T
+            M = get_m_from_kin_en(kinEn, obj.joints_vel);
+            obj.M = M;
+            c = get_coriolis_mat_from_m(M, obj.joints_pos, obj.joints_vel);
+            obj.c = c;
+            
+            % Compute the DH matrices from RF0 to RF_i
+            dh_mats = cell(obj.num_joints, 1);
+            for i=1:obj.num_joints
+                if i == 1
+                    A0i = eye(4);
+                else
+                    A0i = dh_mats{i-1};
+                end
+                dh_mats{i} = A0i * dh_mat_from_table( ...
+                    obj.kuka_lbr_4p_dh_table(i, 1), ...
+                    obj.kuka_lbr_4p_dh_table(i, 2), ...
+                    obj.kuka_lbr_4p_dh_table(i, 3), ...
+                    obj.kuka_lbr_4p_dh_table(i, 4));
+            end
+            
+            % Compute the potential energy U
+            U = 0;
+            g = [0; -obj.g0; 0]';
+            for i=1:obj.num_joints
+                com_i_r0 = dh_mats{i} * [obj.centersOfMass_rfi(1:3, i); 1];
+                U_i = -obj.masses(i) * g * com_i_r0(1:3);
+                U = U + U_i;
+            end
+            
+            % Get the symbolic expression of g
+            g_q = simplify(jacobian(U, obj.joints_pos))';
+            obj.g = g_q;
+        end  
+
+        function [obj, M_num, c_num, g_num] = get_numerical_dyn_terms(obj)
+            [M, c, g] = obj.get_dyn_terms();
+
+            vals = load('./resources/paper_vals.mat');
+            vals = vals.d;
+
+            % Get the numerical values of the masses
+            num_masses = zeros(obj.num_joints);
+            for i=1:obj.num_joints
+                mass_key = strcat("m", int2str(i));
+                num_masses(i) = vals(mass_key);
+            end
+            % Get the numerical values of the masses
+            num_com_rfi = zeros(3, obj.num_joints);
+            for i=1:obj.num_joints
+                c_i_x = strcat("c", int2str(i), ',1');
+                c_i_y = strcat("c", int2str(i), ',2');
+                c_i_z = strcat("c", int2str(i), ',3');
+                num_com_rfi(1:3, i) = [vals(c_i_x); vals(c_i_y); vals(c_i_z)];
+            end
+            % Get the numerical values of the inertia matrix
+            num_inertia_mat = cell(obj.num_joints, 1);
+            for i=1:obj.num_joints
+                I_i_xx = strcat("I", int2str(i), ',1_1');
+                I_i_xy = strcat("I", int2str(i), ',1_2');
+                I_i_xx = strcat("I", int2str(i), ',1_3');
+                I_i_yy = strcat("I", int2str(i), ',2_2');
+                I_i_yz = strcat("I", int2str(i), ',2_3');
+                I_i_zz = strcat("I", int2str(i), ',3_3');
+                num_inertia_mat{i} = [[I_i_xx, I_i_xy, I_i_xz];
+                                    [I_i_xy, I_i_yy, I_i_yz];
+                                    [I_i_xz; I_i_yz,I_i_zz]];
+            end
+            
+
+
+            % [M_num, c_num, g_num] = subs([M, c, g])
+        end
+    end
+end

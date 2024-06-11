@@ -36,6 +36,7 @@ classdef TorqueControllers
             a = J_q_pinv * (TorqueControllers.K_p * (curr_cart_pos - curr_ee_pos) - J_dot_q * curr_joint_vel) - ...
                 (eye(robot.num_joints) - J_q_pinv * J_q) * (TorqueControllers.K_v * curr_joint_vel);
             u = M_q*a + c_q_qdot + g_q;
+            u = double(u);
         end
     end
 end

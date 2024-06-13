@@ -284,6 +284,14 @@ classdef KukaLbr4pRobot
                 g_num = subs(g_num, obj.inertiaMatrices{i}, num_inertia_mat{i});
             end
             obj.g_num = g_num;
+
+            % Convert all the terms to Matlab functions for efficiency
+            M_num = matlabFunction(M_num);
+            c_num = matlabFunction(c_num);
+            g_num = matlabFunction(g_num);
+            obj.M_num = M_num;
+            obj.c_num = c_num;
+            obj.g_num = g_num;
         end
     end
 end

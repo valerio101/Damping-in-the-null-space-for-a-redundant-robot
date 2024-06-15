@@ -2,13 +2,13 @@ classdef TorqueControllers
 % TorqueControllers The class that defines all the controllers used for Cartesian control in this project
     
     properties(Constant)
-        K_p = 10;
-        K_d = 10;
-        K_v = 10;
+        K_p = 0.1;
+        K_d = 0.1;
+        K_v = 1;
     end
 
     methods(Static)
-        function [robot, u] = fullLinearizationInNullSpace(robot, curr_joint_pos, curr_joint_vel, curr_cart_pos)
+        function [robot, u] = fullLinearizationInNullSpace(robot, curr_joint_pos, curr_joint_vel, curr_cart_pos, curr_cart_vel)
             % Returns a control law that performs linearization and decoupling of the robot in the
             %  Cartesian Space, while following the provided trajectory.
             % robot: The KukaLbrRobot instance that represents the robot that this control law is applied to.
@@ -33,11 +33,22 @@ classdef TorqueControllers
 
             % Compute the direct kinematics with the actual data
             [robot, A0e] = robot.compute_direct_kinematics(curr_joint_pos);
-            curr_ee_pos = A0e(1:3, 4);
-            a = J_q_pinv * (TorqueControllers.K_p * (curr_cart_pos - curr_ee_pos) - J_dot_q * curr_joint_vel) - ...
-                (eye(robot.num_joints) - J_q_pinv * J_q) * (TorqueControllers.K_v * curr_joint_vel);
+            curr_ee_pos = double(A0e(1:3, 4));
+            % a = J_q_pinv * (TorqueControllers.K_p * (curr_cart_pos - curr_ee_pos) -TorqueControllers.K_d*(curr_cart_vel - J_q*curr_joint_vel)  ...
+            %     - J_dot_q * curr_joint_vel) - ...
+            %     (eye(robot.num_joints) - J_q_pinv * J_q) * (TorqueControllers.K_v * curr_joint_vel);
+            a = J_q_pinv * (TorqueControllers.K_p * (curr_cart_pos - curr_ee_pos) -TorqueControllers.K_d*J_q*curr_joint_vel  ...
+                - J_dot_q * curr_joint_vel) - ...
+                (eye(robot.num_joints) - J_q_pinv * J_q);
             u = M_q*a + c_q_qdot + g_q;
             u = double(u);
+
+            % u = J_q' * TorqueControllers.K_p * (curr_cart_pos - curr_ee_pos) - ...
+            %     TorqueControllers.K_d * (J_q' * curr_cart_vel - curr_joint_vel) + g_q;
+            % u = double(u);
+
+            disp('e.e. pos:');
+            disp(curr_ee_pos);
         end
     end
 end

@@ -8,7 +8,7 @@ syms I1xx I1xy I1xz I1yy I1yz I1zz I2xx I2xy I2xz I2yy I2yz I2zz I3xx I3xy I3xz 
 syms I5xx I5xy I5xz I5yy I5yz I5zz  I6xx I6xy I6xz I6yy I6yz I6zz I7xx I7xy I7xz I7yy I7yz I7zz  
 
 %definisco la DH_table
-Dh=[0 pi/2 0 q1;0 -pi/2 0 q2;0 -pi/2 d1 q3;0 pi/2 0 q4;0 pi/2 d2 q5; 0 -pi/2 0 q6;0 0 0 q7];
+Dh=[pi/2 0 0 q1;-pi/2 0 0 q2;-pi/2 0 d1 q3;pi/2 0 0 q4;pi/2 0 d2 q5; -pi/2 0 0 q6;0 0 0 q7];
 % modificata Dh=[0 0 0 q1;0 pi/2 0 q2;0 -pi/2 d1 q3;0 -pi/2 0 q4;0 pi/2 d2 q5; 0 pi/2 0 q6;0 -pi/2 0 q7];
 
 %prendo le matrici derivate dalla Dh
@@ -24,12 +24,13 @@ Atot=A1*A2*A3*A4*A5*A6*A7;
 
 %prendo il vettore che collega base con manipolatore
 f=Atot(1:3,4);
-%save('saveVariables.mat', 'f', '-append');
+save('saveVariables.mat', 'f', '-append');
 
 %Calcolo Jacobiana
 disp('fatto')
 J =simplify(jacobian(f,[q1,q2,q3,q4,q5,q6,q7]));
-
+save('saveVariables.mat', 'J', '-append');
+disp('fatto')
 %matrici di inerzia
 I1=[I1xx I1xy I1xz;I1xy I1yy I1yz;I1xz I1yz I1zz];
 I2=[I2xx I2xy I2xz;I2xy I2yy I2yz;I2xz I2yz I2zz];

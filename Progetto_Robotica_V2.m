@@ -53,13 +53,13 @@ load('kuka_lbr4p_dyn_terms_num.mat')
 % c1=subs(c,[I1 I2 I3 I4 I5 I6 I7],[I11 I22 I33 I44 I55 I66 I77]);
 
 %parametri del cerchio 
-centro_x=-1.5708; %coordinata x del centro del cerchio
-centro_y=1.5708; %cordinata y del centro del cerchio
-z0=0.7900; %coordinata z del centro del cerchio
-raggio=1; % raggio del cerchio
+centro_x=0.39-0.2; %coordinata x del centro del cerchio
+centro_y=0; %cordinata y del centro del cerchio
+z0=0.4; %coordinata z del centro del cerchio
+raggio=0.2; % raggio del cerchio
 
 % Discretizzazione dell'angolo theta
-omega = linspace(0, 2*pi, 100);
+omega = linspace(0,  2*pi, 100); %sostiuisco 2*pi con 0.01
 
 %array salvare posizioni e tau
 array_q1=zeros(1,101);
@@ -106,10 +106,10 @@ array_qdot6(1)=0;
 array_qdot7(1)=0;
 
 % Definizione del punto di partenza
-punto_iniziale = [-1.5708, 1.5708, 0.7900];
+punto_iniziale = [0.39, 0, 0.4];
 
 % Definizione della direzione del movimento
-delta_y = 0.1;
+delta_y = 0.001;
 
 % Numero di punti sulla retta
 num_punti = 100;
@@ -120,17 +120,19 @@ y = punto_iniziale(2) + (0:(num_punti-1)) * delta_y;
 z = punto_iniziale(3) * ones(1, num_punti);
 
 xdot=0;
-ydot=0.1;
+ydot=0.001;
 zdot=0;
 %derivata J
 Jdot=diff(J,q1)*qdot1+diff(J,q2)*qdot2+diff(J,q3)*qdot3+diff(J,q4)*qdot4+diff(J,q5)*qdot5+diff(J,q6)*qdot6+diff(J,q7)*qdot7;
 %save('saveVariables.mat', 'Jdot', '-append');
 %simulazione robot
+%traiettoria cercio o traiettoria retta
+pd_cerchio=[centro_x+raggio*cos(omega);centro_y+raggio*sin(omega);z0 * ones(size(omega))];
+pd=[x;y;z];
+pdot=[xdot;ydot;zdot];
 for i=1:100
-    %traiettoria cercio o traiettoria retta
-    pd_cerchio=[centro_x+raggio*cos(omega);centro_y+raggio*sin(omega);z0 * ones(size(omega))];
-    pd=[x;y;z];
-    pdot=[xdot;ydot;zdot];
+    
+    
 
     
 
@@ -166,7 +168,7 @@ for i=1:100
     a=pinv(J1)*(Kp*(pd_cerchio(1:3,i)-f1)-ka*J1*qdot-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*(0.01*g2+kv*qdot);
     %kp ka
     %a=pinv(J1)*(Kp*(pd(1:3,i)-f1)-ka*J1*qdot-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
-    a=pinv(J1)*(Kp*(pd_cerchio(1:3,i)-f1)-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
+    %a=pinv(J1)*(Kp*(pd_cerchio(1:3,i)-f1)-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
     tau=M2*a+c2+g2;
     
     %salvo tau 
@@ -198,13 +200,14 @@ for i=1:100
     array_qdot7(i+1)=p(end,14);
 
 end
-
+%save('saveTorque.mat', 'array_tau1 array_tau2 array_tau3 array_tau4 array_tau5', 'save');
 figure;
 plot3(pd_cerchio(1,1:100), pd_cerchio(2, 1:100), pd_cerchio(3, 1:100), 'b', 'LineWidth', 2);
 hold on 
 plot3(array_fx(1:100), array_fy(1:100), array_fz(1:100), 'r', 'LineWidth', 2);
 for i = 1:100
         text(array_fx(i), array_fy(i),array_fz(i), num2str(i), 'FontSize', 8, 'Color', 'k');
+        text(pd_cerchio(1,i), pd_cerchio(2,i),pd_cerchio(3,i), num2str(i), 'FontSize', 8, 'Color', 'g');
 end
 
 grid on;

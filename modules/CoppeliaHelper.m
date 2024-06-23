@@ -31,10 +31,10 @@ classdef CoppeliaHelper
             end
             
             % Set all the joints in dynamic mode
-            obj.sim.setJointTargetVelocity(obj.joints_num_handle(1), 1000);
-                obj.sim.setJointForce(obj.joints_num_handle(1), 0);
+            %obj.sim.setJointTargetVelocity(obj.joints_num_handle(1), 1000);
+            %obj.sim.setJointForce(obj.joints_num_handle(1), 0);
             for i= 1:7
-                % obj.sim.setJointTargetVelocity(obj.joints_num_handle(i), 1000);
+                obj.sim.setJointTargetVelocity(obj.joints_num_handle(i), 1000);
                 % obj.sim.setJointForce(obj.joints_num_handle(i), 0);
                 % obj.sim.getObjectInt32Param(obj.joints_num_handle(i), obj.sim.jointintparam_dynctrlmode, obj.sim.jointdynctrl_free);
                 % obj.sim.setJointMode(obj.joints_num_handle(i), obj.sim.jointmode_dynamic, 0);

@@ -11,13 +11,13 @@ addpath("modules/")
 
 % Define the path to follow
 syms t real
-circle_center = [0; 0; 0];
-% circle_center = [-1; -1; 0.79];
+radius = 0.5;
+% circle_center = [0; 0; 0];
+circle_center = [radius; radius; 0.79];
 u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
 v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
 T = 10;  % trajectory duration in seconds
-% TODO: add radius
-path(t) = circle_center + u_circle_plane*cos((t/T) * (2*sym(pi))) + v_circle_plane*sin((t/T) * (2*sym(pi)));
+path(t) = circle_center + u_circle_plane*radius*cos((t/T) * (2*sym(pi))) + v_circle_plane*radius*sin((t/T) * (2*sym(pi)));
 
 % Intialize the KUKA robot
 robot = KukaLbr4pRobot();

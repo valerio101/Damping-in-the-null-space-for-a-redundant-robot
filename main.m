@@ -1,4 +1,4 @@
-clear;
+clear all;
 clc;
 
 addpath("dependancies/dh");
@@ -9,25 +9,30 @@ addpath("dependancies/dyn_model");
 addpath("dependancies/redundancy");
 addpath("modules/")
 
-% Define the path to follow
-syms t real
-radius = 0.5;
-% circle_center = [0; 0; 0];
-circle_center = [radius; radius; 0.79];
-u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
-v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
-T = 10;  % trajectory duration in seconds
-path(t) = circle_center + u_circle_plane*radius*cos((t/T) * (2*sym(pi))) + v_circle_plane*radius*sin((t/T) * (2*sym(pi)));
+function setGlobalRobot(val)
+global robot
+robot = val;
+end
+function r = getGlobalRobot
+global robot
+r = robot;
+end
 
 % Intialize the KUKA robot
-robot = KukaLbr4pRobot();
+r = KukaLbr4pRobot();
+setGlobalRobot(r);
 
-% Connect to Coppelia
-SAMPLING_TIME = 0.05;
-copHelper = CoppeliaHelper(SAMPLING_TIME);
+function j_dot = get_j_dot
+    r = getGlobalRobot();
+    [r, j_dot] = r.get_j_dot();
+    setGlobalRobot(r);
+end
 
-% Draw the circle 3 times
-copHelper.followTrajectory(robot, path, 3*T);
+% getBody(robot_inertia, "iiwa_link_1")
 
-% End the connection to Coppelia
-copHelper.endConnection()
+robot_model = importrobot('iiwa14.urdf');
+robot_model.DataFormat = 'column';
+robot_model.Gravity = [0, -9.80665, 0];
+
+% smimport(robot_model)
+smimport("./simulink_proj/robot_model.slx");

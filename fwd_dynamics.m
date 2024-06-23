@@ -1,5 +1,12 @@
 clear;
 clc;
+addpath("dependancies/dh");
+addpath("dependancies/rotations");
+addpath("dependancies/utils");
+addpath("dependancies/inv_kin");
+addpath("dependancies/dyn_model");
+addpath("dependancies/redundancy");
+addpath("modules/")
 
 num_joints = 7;
 robot = KukaLbr4pRobot();
@@ -7,12 +14,13 @@ robot = KukaLbr4pRobot();
 
 % Define the path to follow
 syms t real
-circle_center = [0; 0; 0];
+radius = 0.5;
+% circle_center = [0; 0; 0];
+circle_center = [radius; radius; 0.79];
 u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
 v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
-T = 10;  % trajectory duration in seconds
-% TODO: add radius
-p(t) = circle_center + u_circle_plane*cos((t/T) * (2*sym(pi))) + v_circle_plane*sin((t/T) * (2*sym(pi)));
+T = 3;  % trajectory duration in seconds
+p(t) = circle_center + u_circle_plane*radius*cos((t/T) * (2*sym(pi))) + v_circle_plane*radius*sin((t/T) * (2*sym(pi)));
 p_dot = diff(p);
 
 % Initial conditions [q1, q2, dq1, dq2]

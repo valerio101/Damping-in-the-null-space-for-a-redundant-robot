@@ -6,10 +6,7 @@ robot_model.Gravity = [0, -9.80665, 0];
 %smimport(robot_model)
 open_system('robot_simulink.slx');
 
-function M = getInertiaMatrix(q)
-    robot_model = importrobot('iiwa14.urdf');
-    robot_model.DataFormat = 'column';
-    robot_model.Gravity = [0, -9.80665, 0];
+function M = getInertiaMatrix(robot,q)
     M = massMatrix(robot, q);
 end
 

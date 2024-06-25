@@ -52,14 +52,23 @@ classdef KukaLbr4pRobot
             obj.masses = sym('m', [1 obj.num_joints], 'real');
 
             % The DH table associated to Kuka LBR4+
-            obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
-                    [0, sym(pi)/2,  0,  obj.joints_pos(1)];
-                    [0, -sym(pi)/2,  0,  obj.joints_pos(2)];
-                    [0, -sym(pi)/2,  obj.d1,  obj.joints_pos(3)];
-                    [0, sym(pi)/2,  0,  obj.joints_pos(4)];
-                    [0, sym(pi)/2,  obj.d2,  obj.joints_pos(5)];
-                    [0, -sym(pi)/2,  0,  obj.joints_pos(6)];
-                    [0, 0,  0,  obj.joints_pos(7)];
+            % obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
+            %         [0, sym(pi)/2,  0,  obj.joints_pos(1)];
+            %         [0, -sym(pi)/2,  0,  obj.joints_pos(2)];
+            %         [0, -sym(pi)/2,  obj.d1,  obj.joints_pos(3)];
+            %         [0, sym(pi)/2,  0,  obj.joints_pos(4)];
+            %         [0, sym(pi)/2,  obj.d2,  obj.joints_pos(5)];
+            %         [0, -sym(pi)/2,  0,  obj.joints_pos(6)];
+            %         [0, 0,  0,  obj.joints_pos(7)];
+            % ];
+            obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta  - iiwa14 robot derived from matlab
+              [0, sym(pi)/2,    0.36,     obj.joints_pos(1)]; 
+              [0,-sym(pi)/2,     0.0,     obj.joints_pos(2)]; 
+              [0,-sym(pi)/2,    0.42,     obj.joints_pos(3)]; 
+              [0, sym(pi)/2,       0,     obj.joints_pos(4)]; 
+              [0, sym(pi)/2,    0.40,     obj.joints_pos(5)]; 
+              [0,-sym(pi)/2,       0,     obj.joints_pos(6)]; 
+              [0,         0,   0.126,     obj.joints_pos(7)]; 
             ];
         end
 

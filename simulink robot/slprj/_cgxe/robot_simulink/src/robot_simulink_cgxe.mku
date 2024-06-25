@@ -8,7 +8,7 @@ LD = $(CC)
  
 MODEL  = robot_simulink
 TARGET = cgxe
-MODULE_SRCS 	= m_NRow8X0OFqedY5LmzUzZ3.c m_DUmjmcoui7qfqY1OHRun6G.c m_nF26G4Gm9zCyiROo35Ac1D.c m_erAk6EJSTx5zVZzRlzFnx.c m_UfqrrAApCT5ZaKkYJF4XlB.c
+MODULE_SRCS 	= m_snTPDnxKa3FouhcUIUbioG.c m_KP1IFUne4bVp2cYE0pRnBB.c m_6D6IzLeu1KppjwRnuOsRoB.c m_pOqWks49DzZ1t0A4BrYMwB.c
 MODEL_SRC	= robot_simulink_cgxe.c
 MODEL_REG    = robot_simulink_cgxe_registry.c
 MAKEFILE    = robot_simulink_cgxe.mku

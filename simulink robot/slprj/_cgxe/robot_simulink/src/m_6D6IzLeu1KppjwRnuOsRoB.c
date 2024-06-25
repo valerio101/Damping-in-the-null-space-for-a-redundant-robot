@@ -1,7 +1,7 @@
 /* Include files */
 
 #include "modelInterface.h"
-#include "m_NRow8X0OFqedY5LmzUzZ3.h"
+#include "m_6D6IzLeu1KppjwRnuOsRoB.h"
 #include <string.h>
 #include "mwmathutil.h"
 
@@ -972,29 +972,31 @@ static emlrtRSInfo sd_emlrtRSI = { 288,/* lineNo */
 };
 
 /* Function Declarations */
-static void cgxe_mdl_start(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance);
-static void cgxe_mdl_initialize(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_start(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance);
+static void cgxe_mdl_initialize(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
-static void cgxe_mdl_outputs(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_outputs(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
-static void cgxe_mdl_update(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance);
-static void cgxe_mdl_derivative(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_update(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
-static void cgxe_mdl_enable(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance);
-static void cgxe_mdl_disable(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_derivative(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
-static void cgxe_mdl_terminate(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_enable(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
-static void mw__internal__system__init__fcn(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_disable(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
+static void cgxe_mdl_terminate(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
+  *moduleInstance);
+static void mw__internal__system__init__fcn
+  (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance);
 static void mw__internal__system__terminate__fcn
-  (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance, const emlrtStack *sp);
-static void mw__internal__call__setup(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+  (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance, const emlrtStack *sp);
+static void mw__internal__call__setup(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp);
-static void GetTransformBlock_setupImpl(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void GetTransformBlock_setupImpl(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp,
   robotics_slmanip_internal_block_GetTransformBlock *obj);
-static void b_rand(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance, const
+static void b_rand(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance, const
                    emlrtStack *sp, real_T r[5]);
 static robotics_manip_internal_RigidBody *RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj, char_T bodyInput[10]);
@@ -1030,9 +1032,9 @@ static robotics_manip_internal_RigidBody *k_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj);
 static robotics_manip_internal_RigidBody *l_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj);
-static void mw__internal__call__reset(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void mw__internal__call__reset(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp);
-static void mw__internal__call__step(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void mw__internal__call__step(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp, real_T b_u0[7], real_T c_y0[16]);
 static void RigidBodyTree_forwardKinematics(const emlrtStack *sp,
   robotics_manip_internal_RigidBodyTree *obj, real_T qvec[7], cell_wrap
@@ -1074,11 +1076,11 @@ static void b_array_robotics_manip_internal_C(coder_array_robotics_manip_inte
   *coderArray);
 static void c_array_robotics_manip_internal_C(coder_array_robotics_manip_inte
   *coderArray);
-static void init_simulink_io_address(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void init_simulink_io_address(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance);
 
 /* Function Definitions */
-static void cgxe_mdl_start(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance)
+static void cgxe_mdl_start(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance)
 {
   emlrtStack st = { NULL,              /* site */
     NULL,                              /* tls */
@@ -1094,7 +1096,7 @@ static void cgxe_mdl_start(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance)
   cgxertRestoreGcb(moduleInstance->S, -1, -1);
 }
 
-static void cgxe_mdl_initialize(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_initialize(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance)
 {
   emlrtStack st = { NULL,              /* site */
@@ -1110,7 +1112,7 @@ static void cgxe_mdl_initialize(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
   cgxertRestoreGcb(moduleInstance->S, -1, -1);
 }
 
-static void cgxe_mdl_outputs(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_outputs(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance)
 {
   emlrtStack st = { NULL,              /* site */
@@ -1125,29 +1127,31 @@ static void cgxe_mdl_outputs(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
   cgxertRestoreGcb(moduleInstance->S, -1, -1);
 }
 
-static void cgxe_mdl_update(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance)
-{
-  (void)moduleInstance;
-}
-
-static void cgxe_mdl_derivative(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_update(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance)
 {
   (void)moduleInstance;
 }
 
-static void cgxe_mdl_enable(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance)
-{
-  (void)moduleInstance;
-}
-
-static void cgxe_mdl_disable(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_derivative(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance)
 {
   (void)moduleInstance;
 }
 
-static void cgxe_mdl_terminate(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void cgxe_mdl_enable(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
+  *moduleInstance)
+{
+  (void)moduleInstance;
+}
+
+static void cgxe_mdl_disable(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
+  *moduleInstance)
+{
+  (void)moduleInstance;
+}
+
+static void cgxe_mdl_terminate(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance)
 {
   emlrtStack st = { NULL,              /* site */
@@ -1161,8 +1165,8 @@ static void cgxe_mdl_terminate(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
   cgxertRestoreGcb(moduleInstance->S, -1, -1);
 }
 
-static void mw__internal__system__init__fcn(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
-  *moduleInstance)
+static void mw__internal__system__init__fcn
+  (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance)
 {
   static uint32_T uv[625] = { 5489U, 1301868182U, 2938499221U, 2950281878U,
     1875628136U, 751856242U, 944701696U, 2243192071U, 694061057U, 219885934U,
@@ -1307,7 +1311,7 @@ static void mw__internal__system__init__fcn(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
 }
 
 static void mw__internal__system__terminate__fcn
-  (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance, const emlrtStack *sp)
+  (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance, const emlrtStack *sp)
 {
   emlrtStack st;
   robotics_manip_internal_RigidBody *obj;
@@ -1347,7 +1351,7 @@ static void mw__internal__system__terminate__fcn
   }
 }
 
-static void mw__internal__call__setup(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void mw__internal__call__setup(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp)
 {
   static const int32_T iv[2] = { 1, 51 };
@@ -1426,7 +1430,7 @@ static void mw__internal__call__setup(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
   GetTransformBlock_setupImpl(moduleInstance, &b_st, &moduleInstance->sysobj);
 }
 
-static void GetTransformBlock_setupImpl(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void GetTransformBlock_setupImpl(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp,
   robotics_slmanip_internal_block_GetTransformBlock *obj)
 {
@@ -1823,7 +1827,7 @@ static void GetTransformBlock_setupImpl(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
   obj->TreeInternal.matlabCodegenIsDeleted = false;
 }
 
-static void b_rand(InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance, const
+static void b_rand(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance, const
                    emlrtStack *sp, real_T r[5])
 {
   emlrtStack b_st;
@@ -2724,8 +2728,8 @@ static void rigidBodyJoint_get_MotionSubspace(const emlrtStack *sp,
 static robotics_manip_internal_RigidBody *c_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { 1.0, 0.0, -0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0, 0.0, 0.1575, 1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 6.123233995736766E-17, 1.0,
+    0.0, 0.0, -1.0, 6.123233995736766E-17, 0.0, 0.0, 0.0, 0.36, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '1' };
@@ -3005,11 +3009,11 @@ static robotics_manip_internal_RigidBody *c_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -3037,10 +3041,8 @@ static robotics_manip_internal_RigidBody *c_RigidBody_RigidBody(const emlrtStack
 static robotics_manip_internal_RigidBody *d_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { -1.0, -2.0682310711021444E-13, -0.0, 0.0,
-    1.0127277222968137E-24, -4.8965888601467475E-12, 1.0, 0.0,
-    -2.0682310711021444E-13, 1.0, 4.8965888601467475E-12, 0.0, 0.0, 0.0, 0.2025,
-    1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 6.123233995736766E-17, -1.0,
+    0.0, 0.0, 1.0, 6.123233995736766E-17, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '2' };
@@ -3320,11 +3322,11 @@ static robotics_manip_internal_RigidBody *d_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -3352,10 +3354,8 @@ static robotics_manip_internal_RigidBody *d_RigidBody_RigidBody(const emlrtStack
 static robotics_manip_internal_RigidBody *e_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { -1.0, -2.0682310711021444E-13, -0.0, 0.0,
-    1.0127277222968137E-24, -4.8965888601467475E-12, 1.0, 0.0,
-    -2.0682310711021444E-13, 1.0, 4.8965888601467475E-12, 0.0, 0.0, 0.2045, 0.0,
-    1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 6.123233995736766E-17, -1.0,
+    0.0, 0.0, 1.0, 6.123233995736766E-17, 0.0, 0.0, 0.0, 0.42, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '3' };
@@ -3635,11 +3635,11 @@ static robotics_manip_internal_RigidBody *e_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -3667,8 +3667,8 @@ static robotics_manip_internal_RigidBody *e_RigidBody_RigidBody(const emlrtStack
 static robotics_manip_internal_RigidBody *f_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { 1.0, 0.0, -0.0, 0.0, 0.0, 4.8965888601467475E-12, 1.0,
-    0.0, 0.0, -1.0, 4.8965888601467475E-12, 0.0, 0.0, 0.0, 0.2155, 1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 6.123233995736766E-17, 1.0,
+    0.0, 0.0, -1.0, 6.123233995736766E-17, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '4' };
@@ -3948,11 +3948,11 @@ static robotics_manip_internal_RigidBody *f_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -3980,10 +3980,8 @@ static robotics_manip_internal_RigidBody *f_RigidBody_RigidBody(const emlrtStack
 static robotics_manip_internal_RigidBody *g_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { -1.0, -0.0, 2.0682310711021444E-13, 0.0,
-    2.0682310711021444E-13, 4.8965888601467475E-12, 1.0, 0.0,
-    -1.0127277222968137E-24, 1.0, -4.8965888601467475E-12, 0.0, 0.0, 0.1845, 0.0,
-    1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 6.123233995736766E-17, 1.0,
+    0.0, 0.0, -1.0, 6.123233995736766E-17, 0.0, 0.0, 0.0, 0.4, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '5' };
@@ -4263,11 +4261,11 @@ static robotics_manip_internal_RigidBody *g_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -4295,8 +4293,8 @@ static robotics_manip_internal_RigidBody *g_RigidBody_RigidBody(const emlrtStack
 static robotics_manip_internal_RigidBody *h_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { 1.0, 0.0, -0.0, 0.0, 0.0, 4.8965888601467475E-12, 1.0,
-    0.0, 0.0, -1.0, 4.8965888601467475E-12, 0.0, 0.0, 0.0, 0.2155, 1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 6.123233995736766E-17, -1.0,
+    0.0, 0.0, 1.0, 6.123233995736766E-17, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '6' };
@@ -4576,11 +4574,11 @@ static robotics_manip_internal_RigidBody *h_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -4608,10 +4606,8 @@ static robotics_manip_internal_RigidBody *h_RigidBody_RigidBody(const emlrtStack
 static robotics_manip_internal_RigidBody *i_RigidBody_RigidBody(const emlrtStack
   *sp, robotics_manip_internal_RigidBody *obj)
 {
-  static real_T dv[16] = { -1.0, -0.0, 2.0682310711021444E-13, 0.0,
-    2.0682310711021444E-13, 4.8965888601467475E-12, 1.0, 0.0,
-    -1.0127277222968137E-24, 1.0, -4.8965888601467475E-12, 0.0, 0.0, 0.081, 0.0,
-    1.0 };
+  static real_T dv[16] = { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 0.0, 0.126, 1.0 };
 
   static char_T cv1[12] = { 'i', 'i', 'w', 'a', '_', 'j', 'o', 'i', 'n', 't',
     '_', '7' };
@@ -4891,11 +4887,11 @@ static robotics_manip_internal_RigidBody *i_RigidBody_RigidBody(const emlrtStack
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.JointToParentTransform[loop_ub] = dv[loop_ub];
+    b_obj->JointInternal.JointToParentTransform[loop_ub] = (real_T)iv5[loop_ub];
   }
 
   for (loop_ub = 0; loop_ub < 16; loop_ub++) {
-    b_obj->JointInternal.ChildToJointTransform[loop_ub] = (real_T)iv5[loop_ub];
+    b_obj->JointInternal.ChildToJointTransform[loop_ub] = dv[loop_ub];
   }
 
   st.site = &mb_emlrtRSI;
@@ -5860,7 +5856,7 @@ static robotics_manip_internal_RigidBody *l_RigidBody_RigidBody(const emlrtStack
   return b_obj;
 }
 
-static void mw__internal__call__reset(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void mw__internal__call__reset(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp)
 {
   static const int32_T iv[2] = { 1, 45 };
@@ -5935,7 +5931,7 @@ static void mw__internal__call__reset(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
   }
 }
 
-static void mw__internal__call__step(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void mw__internal__call__step(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance, const emlrtStack *sp, real_T b_u0[7], real_T c_y0[16])
 {
   static const int32_T iv[2] = { 1, 51 };
@@ -7856,7 +7852,7 @@ static void c_array_robotics_manip_internal_C(coder_array_robotics_manip_inte
   }
 }
 
-static void init_simulink_io_address(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
+static void init_simulink_io_address(InstanceStruct_6D6IzLeu1KppjwRnuOsRoB
   *moduleInstance)
 {
   moduleInstance->emlrtRootTLSGlobal = (void *)cgxertGetEMLRTCtx
@@ -7868,70 +7864,70 @@ static void init_simulink_io_address(InstanceStruct_NRow8X0OFqedY5LmzUzZ3
 }
 
 /* CGXE Glue Code */
-static void mdlOutputs_NRow8X0OFqedY5LmzUzZ3(SimStruct *S, int_T tid)
+static void mdlOutputs_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S, int_T tid)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_outputs(moduleInstance);
 }
 
-static void mdlInitialize_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlInitialize_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_initialize(moduleInstance);
 }
 
-static void mdlUpdate_NRow8X0OFqedY5LmzUzZ3(SimStruct *S, int_T tid)
+static void mdlUpdate_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S, int_T tid)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_update(moduleInstance);
 }
 
-static void mdlDerivatives_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlDerivatives_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_derivative(moduleInstance);
 }
 
-static void mdlTerminate_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlTerminate_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_terminate(moduleInstance);
   free((void *)moduleInstance);
 }
 
-static void mdlEnable_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlEnable_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_enable(moduleInstance);
 }
 
-static void mdlDisable_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlDisable_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)cgxertGetRuntimeInstance(S);
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)cgxertGetRuntimeInstance(S);
   cgxe_mdl_disable(moduleInstance);
 }
 
-static void mdlStart_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlStart_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
-  InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *moduleInstance =
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3 *)calloc(1, sizeof
-    (InstanceStruct_NRow8X0OFqedY5LmzUzZ3));
+  InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *moduleInstance =
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB *)calloc(1, sizeof
+    (InstanceStruct_6D6IzLeu1KppjwRnuOsRoB));
   moduleInstance->S = S;
   cgxertSetRuntimeInstance(S, (void *)moduleInstance);
-  ssSetmdlOutputs(S, mdlOutputs_NRow8X0OFqedY5LmzUzZ3);
-  ssSetmdlInitializeConditions(S, mdlInitialize_NRow8X0OFqedY5LmzUzZ3);
-  ssSetmdlUpdate(S, mdlUpdate_NRow8X0OFqedY5LmzUzZ3);
-  ssSetmdlDerivatives(S, mdlDerivatives_NRow8X0OFqedY5LmzUzZ3);
-  ssSetmdlTerminate(S, mdlTerminate_NRow8X0OFqedY5LmzUzZ3);
-  ssSetmdlEnable(S, mdlEnable_NRow8X0OFqedY5LmzUzZ3);
-  ssSetmdlDisable(S, mdlDisable_NRow8X0OFqedY5LmzUzZ3);
+  ssSetmdlOutputs(S, mdlOutputs_6D6IzLeu1KppjwRnuOsRoB);
+  ssSetmdlInitializeConditions(S, mdlInitialize_6D6IzLeu1KppjwRnuOsRoB);
+  ssSetmdlUpdate(S, mdlUpdate_6D6IzLeu1KppjwRnuOsRoB);
+  ssSetmdlDerivatives(S, mdlDerivatives_6D6IzLeu1KppjwRnuOsRoB);
+  ssSetmdlTerminate(S, mdlTerminate_6D6IzLeu1KppjwRnuOsRoB);
+  ssSetmdlEnable(S, mdlEnable_6D6IzLeu1KppjwRnuOsRoB);
+  ssSetmdlDisable(S, mdlDisable_6D6IzLeu1KppjwRnuOsRoB);
   cgxe_mdl_start(moduleInstance);
 
   {
@@ -7941,34 +7937,34 @@ static void mdlStart_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
   }
 }
 
-static void mdlProcessParameters_NRow8X0OFqedY5LmzUzZ3(SimStruct *S)
+static void mdlProcessParameters_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S)
 {
 }
 
-void method_dispatcher_NRow8X0OFqedY5LmzUzZ3(SimStruct *S, int_T method, void
+void method_dispatcher_6D6IzLeu1KppjwRnuOsRoB(SimStruct *S, int_T method, void
   *data)
 {
   switch (method) {
    case SS_CALL_MDL_START:
-    mdlStart_NRow8X0OFqedY5LmzUzZ3(S);
+    mdlStart_6D6IzLeu1KppjwRnuOsRoB(S);
     break;
 
    case SS_CALL_MDL_PROCESS_PARAMETERS:
-    mdlProcessParameters_NRow8X0OFqedY5LmzUzZ3(S);
+    mdlProcessParameters_6D6IzLeu1KppjwRnuOsRoB(S);
     break;
 
    default:
     /* Unhandled method */
     /*
        sf_mex_error_message("Stateflow Internal Error:\n"
-       "Error calling method dispatcher for module: NRow8X0OFqedY5LmzUzZ3.\n"
+       "Error calling method dispatcher for module: 6D6IzLeu1KppjwRnuOsRoB.\n"
        "Can't handle method %d.\n", method);
      */
     break;
   }
 }
 
-mxArray *cgxe_NRow8X0OFqedY5LmzUzZ3_BuildInfoUpdate(void)
+mxArray *cgxe_6D6IzLeu1KppjwRnuOsRoB_BuildInfoUpdate(void)
 {
   mxArray * mxBIArgs;
   mxArray * elem_1;
@@ -8027,7 +8023,7 @@ mxArray *cgxe_NRow8X0OFqedY5LmzUzZ3_BuildInfoUpdate(void)
   return mxBIArgs;
 }
 
-mxArray *cgxe_NRow8X0OFqedY5LmzUzZ3_fallback_info(void)
+mxArray *cgxe_6D6IzLeu1KppjwRnuOsRoB_fallback_info(void)
 {
   const char* fallbackInfoFields[] = { "fallbackType", "incompatiableSymbol" };
 

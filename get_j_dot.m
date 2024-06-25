@@ -12,7 +12,7 @@ function setup(block)
 block.NumInputPorts  = 2;
 block.NumOutputPorts = 1;
 
-block.NumDialogPrms = 1;
+block.NumDialogPrms = 0;
 
 block.InputPort(1).Dimensions = 7;  % 7 DOF robot configuration
 block.InputPort(1).DatatypeID = 0;  % double

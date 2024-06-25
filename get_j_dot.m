@@ -50,7 +50,7 @@ function Outputs(block)
 
     global robot
     [r, j_dot] = robot.get_j_dot(q, qdot);
-    display(j_dot);
+    robot = r;
     j_dot = double(j_dot);
     
     % r = getGlobalRobot();

@@ -23,9 +23,8 @@ end
 r = KukaLbr4pRobot();
 setGlobalRobot(r);
 
-
-robot_to_try = "iiwa14";
-% robot_to_try = "lwr";
+% robot_to_try = "iiwa14";
+robot_to_try = "lwr";
 
 if robot_to_try == "iiwa14"
     robot_model = importrobot('iiwa14.urdf'); % Load KUKA iiwa14
@@ -33,7 +32,7 @@ else
     robot_model = importrobot("../robot_model/kuka-lwr-4plus/model1.urdf"); % Load KUKA LWR 4+
 end
 robot_model.DataFormat = 'column';
-robot_model.Gravity = [0, -9.80665, 0];
+robot_model.Gravity = [0, 0, -9.80665];
 
 % Set robot DH params
 dhparams = r.kuka_lbr_4p_dh_table;

@@ -23,8 +23,15 @@ end
 r = KukaLbr4pRobot();
 setGlobalRobot(r);
 
-% robot_model = importrobot('iiwa14.urdf'); % Load KUKA iiwa14
-robot_model = importrobot("../robot_model/kuka-lwr-4plus/model1.urdf"); % Load KUKA LWR 4+
+
+robot_to_try = "iiwa14";
+% robot_to_try = "lwr";
+
+if robot_to_try == "iiwa14"
+    robot_model = importrobot('iiwa14.urdf'); % Load KUKA iiwa14
+else
+    robot_model = importrobot("../robot_model/kuka-lwr-4plus/model1.urdf"); % Load KUKA LWR 4+
+end
 robot_model.DataFormat = 'column';
 robot_model.Gravity = [0, -9.80665, 0];
 
@@ -61,8 +68,11 @@ for i=2:8
 end
 
 % smimport(robot_model)
-% open_system('robot_simulink.slx'); % iiwa14
-open_system('./kuka_test/lwr_scheme.slx'); % lwr4
+if robot_to_try == "iiwa14"
+    open_system('robot_simulink.slx'); % iiwa14
+else
+    open_system('./kuka_test/lwr_scheme.slx'); % lwr4
+end
 
 % Load the Simulink file:
 % sfile = "./simulink_proj/robot_model.slx";

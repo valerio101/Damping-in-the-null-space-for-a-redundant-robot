@@ -89,4 +89,4 @@ end
 % sfile = "./simulink_proj/robot_model.slx";
 % load_system(sfile);
 % Run the simulation:
-% sout = sim(sfile,'StopTime','10.0');
+% sout = sim(sfile,'StopTime',int2str(T));

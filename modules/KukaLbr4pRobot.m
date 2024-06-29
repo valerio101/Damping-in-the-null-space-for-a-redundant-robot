@@ -213,7 +213,7 @@ classdef KukaLbr4pRobot
             obj.g = g_q;
         end  
 
-        function [obj, M_num, c_num, g_num] = get_numerical_dyn_terms(obj)
+        function [obj, M_num, c_num, g_num] = get_numerical_dyn_terms(obj, compute)
             % get_numerical_dyn_terms: Returns the numerical form of the
             % dynamic terms (M, c, g) with dependancy only on q and q_dot.
             % compute: Optional parameter (=False). If set to true, when the dyn terms have not been computed yet,

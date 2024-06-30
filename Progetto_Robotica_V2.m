@@ -109,7 +109,7 @@ array_qdot7(1)=0;
 punto_iniziale = [0.39, 0, 0.4];
 
 % Definizione della direzione del movimento
-delta_y = 0.001;
+delta_y = 0.01;
 
 % Numero di punti sulla retta
 num_punti = 100;
@@ -120,14 +120,16 @@ y = punto_iniziale(2) + (0:(num_punti-1)) * delta_y;
 z = punto_iniziale(3) * ones(1, num_punti);
 
 xdot=0;
-ydot=0.001;
+ydot=0.01;
 zdot=0;
+
 %derivata J
 Jdot=diff(J,q1)*qdot1+diff(J,q2)*qdot2+diff(J,q3)*qdot3+diff(J,q4)*qdot4+diff(J,q5)*qdot5+diff(J,q6)*qdot6+diff(J,q7)*qdot7;
 %save('saveVariables.mat', 'Jdot', '-append');
 %simulazione robot
 %traiettoria cercio o traiettoria retta
 pd_cerchio=[centro_x+raggio*cos(omega);centro_y+raggio*sin(omega);z0 * ones(size(omega))];
+pd_cerchio_dot=[-raggio*sin(omega);raggio*cos(omega);zeros(size(omega))];
 pd=[x;y;z];
 pdot=[xdot;ydot;zdot];
 for i=1:100
@@ -158,19 +160,23 @@ for i=1:100
     array_fy(i)=f1(2);
     array_fz(i)=f1(3);
     
-    %formula tau
-    Kp=0.1;
-    ka=0.1;
-    kv=1;
-    %derivate 
-    %a=pinv(J1)*(Kp*(pdot-J1*qdot)-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
-    %giusto
-    a=pinv(J1)*(Kp*(pd_cerchio(1:3,i)-f1)-ka*J1*qdot-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*(0.01*g2+kv*qdot);
-    %kp ka
-    %a=pinv(J1)*(Kp*(pd(1:3,i)-f1)-ka*J1*qdot-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
-    %a=pinv(J1)*(Kp*(pd_cerchio(1:3,i)-f1)-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
-    tau=M2*a+c2+g2;
+    array_fx(i)=f1(1);
+    array_fy(i)=f1(2);
+    array_fz(i)=f1(3);
     
+    %formula tau
+    Kp=1;
+    Ki=10;
+    Kv=10;
+
+    %derivate 
+    %giusto
+    F=J1*pinv(M2);
+    a=Kp*(pd_cerchio(1:3,i)-f1)+Ki*(pd_cerchio_dot(1:3,i)-J1*qdot);
+    tau=pinv(F)*(a-Jdot1*qdot+F*(c2+g2))+(eye(7,7)-pinv(F)*F)*[1;1;1;1;1;1;1];
+    %parzialmente giusto ma non era questo il controllore
+    % a=pinv(J1)*(Kp*(pd(1:3,i)-f1)-Ki*(J1)*qdot-Jdot1*qdot)-(eye(7,7)-pinv(J1)*J1)*0.01*g2;
+    % tau=M2*a+c2+g2;
     %salvo tau 
     array_tau1(i)=tau(1);
     array_tau2(i)=tau(2);
@@ -217,7 +223,7 @@ ylabel('Y');
 zlabel('Z');
 % limiti_asse=[-2 2];
 % axis([[-2 2] [-10 2] [-2 2]]);
-title('Cerchio nel piano XY');
+title('controllore con cerchio spostato');
 
 
 function dp=sistema(t,y,tau,M2,c2,g2) 

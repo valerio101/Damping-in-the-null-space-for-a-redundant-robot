@@ -54,10 +54,25 @@ end
 %     a1 ... an, alpha1 ... alphan, d1 ... dn
 % ]
 phi_n = zeros(3 * num_joints, 1);
-phi_n_cell = num2cell(phi_n);
 a_ind_start = 1;
 alpha_ind_start = num_joints + a_ind_start;
 d_ind_start = alpha_ind_start + num_joints;
+
+% Set initial guesses
+kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
+        [0, sym(pi)/2,  0,  0];
+        [0, -sym(pi)/2,  0,  0];
+        [0, -sym(pi)/2,  0.4, 0];
+        [0, sym(pi)/2,  0,  0];
+        [0, sym(pi)/2,  0.39, 0];
+        [0, -sym(pi)/2,  0,  0];
+        [0, 0,  0,  0];
+];
+phi_n(a_ind_start:num_joints, 1) = kuka_lbr_4p_dh_table(1:num_joints, 1)';
+phi_n(alpha_ind_start:d_ind_start-1, 1) = kuka_lbr_4p_dh_table(1:num_joints, 2)';
+phi_n(d_ind_start:end, 1) = kuka_lbr_4p_dh_table(1:num_joints, 3)';
+
+phi_n_cell = num2cell(phi_n);
 for l = 1:lMax
     tic
     % Compute delta_r_bar and phi_bar
@@ -86,7 +101,13 @@ for l = 1:lMax
     phi_n_cell = num2cell(phi_n);
 
     iterDur = toc;
-    fprintf('l=%d completed\tIterDur: %d\tETA: %d sec.\n', l, iterDur, (lMax-l)*iterDur);
+    fprintf('l=%d completed\tIterDur: %.2f\tETA: %.2f sec.\terr:%.2f\n', l, iterDur, (lMax-l)*iterDur, norm(delta_r_bar));
+    % fprintf('l=%d completed\tIterDur: %.2f\tETA: %.2f sec.\n', l, iterDur, (lMax-l)*iterDur);
+
+    if norm(delta_r_bar) < 0.0001
+        fprintf("Ended calibration prematurely because the error was < 0.0001");
+        break;
+    end
 end
 % disp(phi_n)
 

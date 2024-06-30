@@ -70,6 +70,15 @@ classdef KukaLbr4pRobot
             %   [0,-sym(pi)/2,       0,     obj.joints_pos(6)]; 
             %   [0,         0,   0.126,     obj.joints_pos(7)]; 
             % ];
+            % obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta  - retrieved from urdf file
+            %     0         0    0.1200       obj.joints_pos(1)
+            %     0         0    0.2000       obj.joints_pos(2)
+            %     0         0    0.2000       obj.joints_pos(3)
+            %     0         0    0.2000       obj.joints_pos(4)
+            %     0         0    0.2000       obj.joints_pos(5)
+            %     0         0    0.1900       obj.joints_pos(6)
+            %     0         0    0.0780       obj.joints_pos(7)
+            % ];
         end
 
         function [obj, f_q] = compute_direct_kinematics(obj, curr_joint_pos)

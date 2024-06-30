@@ -32,8 +32,8 @@ nabla_alpha = matlabFunction(jacobian(A0e(1:3, 4), alpha));  % (a2-7, alpha1-6, 
 nabla_d = matlabFunction(jacobian(A0e(1:3, 4), d));  % (alpha1-6, q1-6)
 
 
-num_experiments = 10;
-lMax = 10; % Num of iterations
+num_experiments = 15;
+lMax = 20; % Num of iterations
 m = 3; % The number of rows of the direct kinematics
 
 % Intitialize the test configurations (randomly)

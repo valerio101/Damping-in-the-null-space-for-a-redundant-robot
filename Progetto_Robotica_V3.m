@@ -9,7 +9,7 @@ syms I5xx I5xy I5xz I5yy I5yz I5zz  I6xx I6xy I6xz I6yy I6yz I6zz I7xx I7xy I7xz
 
 %carico matrici M g c
 load('saveVariables.mat')
-load('kuka_lbr4p_dyn_terms_num.mat')
+load('./resources/kuka_lbr4p_dyn_terms_num.mat')
 
 %parametri del cerchio 
 centro_x=0.39-0.2; %coordinata x del centro del cerchio
@@ -72,7 +72,7 @@ Jdot=diff(J,q1)*qdot1+diff(J,q2)*qdot2+diff(J,q3)*qdot3+diff(J,q4)*qdot4+diff(J,
 pd_cerchio=[centro_x+raggio*cos(omega);centro_y+raggio*sin(omega);z0 * ones(size(omega))];
 pd_cerchio_dot=[-raggio*sin(omega);raggio*cos(omega);zeros(size(omega))];
 for i=1:100
-
+    tic
     %dinamica del robot
     M2=M_num(array_q2(i), array_q3(i), array_q4(i) ,array_q5(i), array_q6(i) ,array_q7(i));
     g2=g_num(array_q1(i), array_q2(i), array_q3(i) ,array_q4(i), array_q5(i), array_q6(i), array_q7(i));
@@ -138,6 +138,8 @@ for i=1:100
     array_qdot6(i+1)=p(end,13);
     array_qdot7(i+1)=p(end,14);
 
+    iterDur = toc;
+    fprintf('i=%d completed\tIterDur: %.2f\tETA: %.2f sec.\tcart. err.:%.2f\n', i, iterDur, (100-i)*iterDur, norm(pd_cerchio(1:3,i)-f1));
 end
 %save('saveTorque.mat', 'array_tau1 array_tau2 array_tau3 array_tau4 array_tau5', 'save');
 figure;

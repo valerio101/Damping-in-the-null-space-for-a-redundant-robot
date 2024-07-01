@@ -33,7 +33,7 @@ end
 % Test the import
 addpath("urdf/");
 addpath("meshes/");
-smimport("./urdf/model1-modif.urdf");
+smimport("./urdf/model1-withDyn.urdf");
 return;
 
 % Intialize the KUKA robot
@@ -53,14 +53,14 @@ robot_model.Gravity = [0, 0, -9.80665];
 % robot_model.Gravity = [0, 0, 0];
 
 % Set robot DH params
-dhparams = r.kuka_lbr_4p_dh_table;
-dhparams(:, 4) = zeros(7,1);
-dhparams = double(dhparams);
-% setFixedTransform(robot_model.Bodies{2}.Joint,dhparams(1,:),'dh');
-for i=2:8
-    curr_dhparams = num2cell(dhparams(i-1, :));
-    setFixedTransform(robot_model.Bodies{i}.Joint, dh_mat_from_table(curr_dhparams{1:4}));
-end
+% dhparams = r.kuka_lbr_4p_dh_table;
+% dhparams(:, 4) = zeros(7,1);
+% dhparams = double(dhparams);
+% % setFixedTransform(robot_model.Bodies{2}.Joint,dhparams(1,:),'dh');
+% for i=2:8
+%     curr_dhparams = num2cell(dhparams(i-1, :));
+%     setFixedTransform(robot_model.Bodies{i}.Joint, dh_mat_from_table(curr_dhparams{1:4}));
+% end
 
 % Set robot dynamic parameters (equal to KUKA LWR4+)
 vals = load('./resources/paper_vals.mat').d;
@@ -84,10 +84,10 @@ end
 
 
 % Export robot_model to .urdf
-% exporter = urdfExporter(robot_model);
-% exporter.ExportMesh = true;
-% writefile(exporter,OutputfileName="model1-modif.urdf")
-% smimport("./model1-modif.urdf");
+exporter = urdfExporter(robot_model);
+exporter.ExportMesh = true;
+writefile(exporter,OutputfileName="model1-withDyn.urdf")
+smimport("./model1-withDyn.urdf");
 
 % smimport(robot_model);
 if robot_to_try == "iiwa14"

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="Robot">
+    <link name="lwr_arm_1_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00023700  0.02746400 -0.00051000"/>
+            <mass value="4.32741200"/>
+            <inertia ixx="0.59529683" ixy="-0.00107717" ixz="0.00428852" iyy="0.03554363" iyz="-0.09960561" izz="0.56215771"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_a.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.00000000 0.48700000 0.00000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_a_convex.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_2_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00634100 -0.07828100  0.18180600"/>
+            <mass value="6.99009300"/>
+            <inertia ixx="-0.23221819" ixy="0.02244426" ixz="0.00016840" iyy="-0.19016755" iyz="-0.08934969" izz="0.01127424"/>
+        </inertial>
+        <visual>
+            <origin rpy="-3.14159265  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.20000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_b.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.00000000 0.48700000 0.00000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="-3.14159265  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.20000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_b_convex.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_3_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00161600  0.24106400  0.06522700"/>
+            <mass value="1.45350100"/>
+            <inertia ixx="-0.02922664" ixy="-0.00923723" ixz="-0.00442421" iyy="0.01980119" iyz="0.00384968" izz="-0.04497943"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_a.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.00000000 0.48700000 0.00000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_a_convex.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_4_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00382800 -0.03867000  0.24251600"/>
+            <mass value="2.49511700"/>
+            <inertia ixx="-0.13788596" ixy="-0.00274735" ixz="0.00749134" iyy="-0.13280740" iyz="-0.02061744" izz="0.00340632"/>
+        </inertial>
+        <visual>
+            <origin rpy="-3.14159265 -0.00000000  0.00000000" xyz="0.00000000 0.00000000 0.20000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_b.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.00000000 0.48700000 0.00000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="-3.14159265 -0.00000000  0.00000000" xyz="0.00000000 0.00000000 0.20000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_b_convex.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_5_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00219700 -0.13656000 -0.02653200"/>
+            <mass value="1.46368500"/>
+            <inertia ixx="-0.00425908" ixy="-0.00046186" ixz="-0.00032568" iyy="0.00551658" iyz="-0.00520776" izz="-0.00941879"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_last.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.00000000 0.48700000 0.00000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_segment_last_convex.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_6_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00100000 0.01195700 0.01676100"/>
+            <mass value="0.53548400"/>
+            <inertia ixx="0.00747401" ixy="-0.00100460" ixz="0.00145798" iyy="0.00289803" iyz="0.00164732" izz="0.00686391"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_wrist.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.70000000 0.70000000 0.70000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000  0.00000000 -3.14159265" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_wrist_convex.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_7_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00210500 -0.00075100  0.05559200"/>
+            <mass value="0.41434200"/>
+            <inertia ixx="0.00221425" ixy="-0.00231734" ixz="0.00043451" iyy="0.00057165" iyz="0.00060570" izz="0.00495193"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_flanche.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.70000000 0.70000000 0.70000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_flanche.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="lwr_arm_base_link">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.05500000"/>
+            <mass value="1.20000000"/>
+            <inertia ixx="0.00229000" ixy="0.00000000" ixz="0.00000000" iyy="0.00216000" iyz="0.00000000" izz="0.00229000"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_base.stl" scale="100.00000000 100.00000000 100.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.00000000 0.48700000 0.00000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.01000000"/>
+            <geometry>
+                <mesh filename="./meshesWithDyn/arm_base_convex.stl" scale="0.90000000 0.90000000 0.90000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="world">
+        <inertial>
+            <mass value="0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+    </link>
+    <joint name="arm_world_joint" type="fixed">
+        <parent link="world"/>
+        <child link="lwr_arm_base_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.01000000"/>
+        <axis xyz="100"/>
+    </joint>
+    <joint name="lwr_arm_0_joint" type="revolute">
+        <parent link="lwr_arm_base_link"/>
+        <child link="lwr_arm_1_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.11000000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-2.96705973" upper="2.96705973" effort="0" velocity="0"/>
+    </joint>
+    <joint name="lwr_arm_1_joint" type="revolute">
+        <parent link="lwr_arm_1_link"/>
+        <child link="lwr_arm_2_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.20000000"/>
+        <axis xyz="0.00000000 -1.00000000  0.00000000"/>
+        <limit lower="-2.09439510" upper="2.09439510" effort="0" velocity="0"/>
+    </joint>
+    <joint name="lwr_arm_2_joint" type="revolute">
+        <parent link="lwr_arm_2_link"/>
+        <child link="lwr_arm_3_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.20000000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-2.96705973" upper="2.96705973" effort="0" velocity="0"/>
+    </joint>
+    <joint name="lwr_arm_3_joint" type="revolute">
+        <parent link="lwr_arm_3_link"/>
+        <child link="lwr_arm_4_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.20000000"/>
+        <axis xyz="0.00000000 1.00000000 0.00000000"/>
+        <limit lower="-2.09439510" upper="2.09439510" effort="0" velocity="0"/>
+    </joint>
+    <joint name="lwr_arm_4_joint" type="revolute">
+        <parent link="lwr_arm_4_link"/>
+        <child link="lwr_arm_5_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.20000000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-2.96705973" upper="2.96705973" effort="0" velocity="0"/>
+    </joint>
+    <joint name="lwr_arm_5_joint" type="revolute">
+        <parent link="lwr_arm_5_link"/>
+        <child link="lwr_arm_6_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.19000000"/>
+        <axis xyz="0.00000000 -1.00000000  0.00000000"/>
+        <limit lower="-2.09439510" upper="2.09439510" effort="0" velocity="0"/>
+    </joint>
+    <joint name="lwr_arm_6_joint" type="revolute">
+        <parent link="lwr_arm_6_link"/>
+        <child link="lwr_arm_7_link"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.07800000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-2.96705973" upper="2.96705973" effort="0" velocity="0"/>
+    </joint>
+</robot>

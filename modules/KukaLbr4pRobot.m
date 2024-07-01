@@ -52,15 +52,15 @@ classdef KukaLbr4pRobot
             obj.masses = sym('m', [1 obj.num_joints], 'real');
 
             % The DH table associated to Kuka LBR4+
-            obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
-                    [0, sym(pi)/2,  0,  obj.joints_pos(1)];
-                    [0, -sym(pi)/2,  0,  obj.joints_pos(2)];
-                    [0, -sym(pi)/2,  obj.d1,  obj.joints_pos(3)];
-                    [0, sym(pi)/2,  0,  obj.joints_pos(4)];
-                    [0, sym(pi)/2,  obj.d2,  obj.joints_pos(5)];
-                    [0, -sym(pi)/2,  0,  obj.joints_pos(6)];
-                    [0, 0,  0,  obj.joints_pos(7)];
-            ];
+            % obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta - from paper
+            %         [0, sym(pi)/2,  0,  obj.joints_pos(1)];
+            %         [0, -sym(pi)/2,  0,  obj.joints_pos(2)];
+            %         [0, -sym(pi)/2,  obj.d1,  obj.joints_pos(3)];
+            %         [0, sym(pi)/2,  0,  obj.joints_pos(4)];
+            %         [0, sym(pi)/2,  obj.d2,  obj.joints_pos(5)];
+            %         [0, -sym(pi)/2,  0,  obj.joints_pos(6)];
+            %         [0, 0,  0,  obj.joints_pos(7)];
+            % ];
             % obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta  - iiwa14 robot derived from matlab
             %   [0, sym(pi)/2,    0.36,     obj.joints_pos(1)]; 
             %   [0,-sym(pi)/2,     0.0,     obj.joints_pos(2)]; 
@@ -70,15 +70,15 @@ classdef KukaLbr4pRobot
             %   [0,-sym(pi)/2,       0,     obj.joints_pos(6)]; 
             %   [0,         0,   0.126,     obj.joints_pos(7)]; 
             % ];
-            % obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta  - retrieved from urdf file
-            %     0         0    0.1200       obj.joints_pos(1)
-            %     0         0    0.2000       obj.joints_pos(2)
-            %     0         0    0.2000       obj.joints_pos(3)
-            %     0         0    0.2000       obj.joints_pos(4)
-            %     0         0    0.2000       obj.joints_pos(5)
-            %     0         0    0.1900       obj.joints_pos(6)
-            %     0         0    0.0780       obj.joints_pos(7)
-            % ];
+            obj.kuka_lbr_4p_dh_table = [ % a, alpha, d, theta  - retrieved from calibration with urdf model1
+                0        1.5708           0.31       obj.joints_pos(1)
+                0       -1.5708              0       obj.joints_pos(2)
+                0       -1.5708            0.4       obj.joints_pos(3)
+                0        1.5708              0       obj.joints_pos(4)
+                0        1.5708           0.39       obj.joints_pos(5)
+                0       -1.5708              0       obj.joints_pos(6)
+                0             0          0.078       obj.joints_pos(7)
+            ];
         end
 
         function [obj, f_q] = compute_direct_kinematics(obj, curr_joint_pos)
@@ -95,6 +95,8 @@ classdef KukaLbr4pRobot
                         obj.kuka_lbr_4p_dh_table(i, 3), ...
                         obj.kuka_lbr_4p_dh_table(i, 4));
                 end
+
+                % Save as matlabFunction file: matlabFunction(A0e(1:3, 4), "File", './resources/f_q1.m')
 
                 obj.A0e = A0e;
             end
@@ -115,6 +117,8 @@ classdef KukaLbr4pRobot
                 j = jacobian(A0e(1:3, 4), obj.joints_pos);
                 obj.j = j;
             end
+
+            % Save as matlabFunction file: matlabFunction(j, "File", './resources/analytic_jacobian1.m')
 
             if exist('curr_joint_pos','var')
                 % Compute the Jacobian in the current configuration
@@ -149,6 +153,8 @@ classdef KukaLbr4pRobot
 
                 obj.j_dot = j_dot;
             end
+
+            % Save as matlabFunction file: matlabFunction(j_dot, "File", './resources/analytic_j_dot1.m')
 
             if exist('curr_joint_pos','var') && exist('curr_joint_vel','var')
                 % Compute the Jacobian in the current configuration
@@ -302,6 +308,11 @@ classdef KukaLbr4pRobot
                 g_num = subs(g_num, obj.inertiaMatrices{i}, num_inertia_mat{i});
             end
             obj.g_num = g_num;
+
+
+            % Save as matlabFunction file: matlabFunction(M_num, "File", './resources/M_num1.m')
+            % Save as matlabFunction file: matlabFunction(c_num, "File", './resources/c_num1.m')
+            % Save as matlabFunction file: matlabFunction(g_num, "File", './resources/g_num1.m')
 
             % Convert all the terms to Matlab functions for efficiency
             M_num = matlabFunction(M_num);

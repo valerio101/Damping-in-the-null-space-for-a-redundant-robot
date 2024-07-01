@@ -254,7 +254,8 @@ classdef KukaLbr4pRobot
 
             [obj, M, c, g] = obj.get_dyn_terms();
 
-            vals = load('./resources/paper_vals.mat').d;
+            % vals = load('./resources/paper_vals.mat').d; % dyn params from paper
+            vals = load('./resources/paper_vals1.mat').d; % dyn params extracted from URDF
 
             % Get the numerical values of the masses
             num_masses = zeros(1, obj.num_joints);

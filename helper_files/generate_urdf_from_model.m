@@ -31,10 +31,10 @@ end
 % path_ddot(t) = diff(path_dot, t);
 
 % Test the import
-addpath("urdf/");
-addpath("meshes/");
-smimport("./urdf/model1-withDyn.urdf");
-return;
+% addpath("urdf/");
+% addpath("meshes/");
+% smimport("./urdf/model1-withDyn.urdf");
+% return;
 
 % Intialize the KUKA robot
 r = KukaLbr4pRobot();
@@ -63,24 +63,52 @@ robot_model.Gravity = [0, 0, -9.80665];
 % end
 
 % Set robot dynamic parameters (equal to KUKA LWR4+)
-vals = load('./resources/paper_vals.mat').d;
-for i=2:8
-    j = i-1;
-    mass_key = strcat("m", int2str(j));
-    c_i_x = strcat("c", int2str(j), ',1');
-    c_i_y = strcat("c", int2str(j), ',2');
-    c_i_z = strcat("c", int2str(j), ',3');
-    I_i_xx = strcat("I", int2str(j), ',1_1');
-    I_i_xy = strcat("I", int2str(j), ',1_2');
-    I_i_xz = strcat("I", int2str(j), ',1_3');
-    I_i_yy = strcat("I", int2str(j), ',2_2');
-    I_i_yz = strcat("I", int2str(j), ',2_3');
-    I_i_zz = strcat("I", int2str(j), ',3_3');
+% vals = load('./resources/paper_vals.mat').d;
+% for i=2:8
+%     j = i-1;
+%     mass_key = strcat("m", int2str(j));
+%     c_i_x = strcat("c", int2str(j), ',1');
+%     c_i_y = strcat("c", int2str(j), ',2');
+%     c_i_z = strcat("c", int2str(j), ',3');
+%     I_i_xx = strcat("I", int2str(j), ',1_1');
+%     I_i_xy = strcat("I", int2str(j), ',1_2');
+%     I_i_xz = strcat("I", int2str(j), ',1_3');
+%     I_i_yy = strcat("I", int2str(j), ',2_2');
+%     I_i_yz = strcat("I", int2str(j), ',2_3');
+%     I_i_zz = strcat("I", int2str(j), ',3_3');
+% 
+%     robot_model.Bodies{i}.Mass = vals(mass_key);
+%     robot_model.Bodies{i}.CenterOfMass = [vals(c_i_x) vals(c_i_y) vals(c_i_z)];
+%     robot_model.Bodies{i}.Inertia = [vals(I_i_xx), vals(I_i_yy), vals(I_i_zz), vals(I_i_yz), vals(I_i_xz), vals(I_i_xy)];
+% end
 
-    robot_model.Bodies{i}.Mass = vals(mass_key);
-    robot_model.Bodies{i}.CenterOfMass = [vals(c_i_x); vals(c_i_y); vals(c_i_z)];
-    robot_model.Bodies{i}.Inertia = [vals(I_i_xx), vals(I_i_yy), vals(I_i_zz), vals(I_i_yz), vals(I_i_xz), vals(I_i_xy)];
-end
+% Extract dynamic parameters from URDF
+% d = configureDictionary("string","double");
+% for i=2:8
+%     j = i-1;
+%     mass_key = strcat("m", int2str(j));
+%     c_i_x = strcat("c", int2str(j), ',1');
+%     c_i_y = strcat("c", int2str(j), ',2');
+%     c_i_z = strcat("c", int2str(j), ',3');
+%     I_i_xx = strcat("I", int2str(j), ',1_1');
+%     I_i_xy = strcat("I", int2str(j), ',1_2');
+%     I_i_xz = strcat("I", int2str(j), ',1_3');
+%     I_i_yy = strcat("I", int2str(j), ',2_2');
+%     I_i_yz = strcat("I", int2str(j), ',2_3');
+%     I_i_zz = strcat("I", int2str(j), ',3_3');
+% 
+%     d(mass_key) = robot_model.Bodies{i}.Mass;
+%     d(c_i_x) = robot_model.Bodies{i}.CenterOfMass(1);
+%     d(c_i_y) = robot_model.Bodies{i}.CenterOfMass(2);
+%     d(c_i_z) = robot_model.Bodies{i}.CenterOfMass(3);
+%     d(I_i_xx) = robot_model.Bodies{i}.Inertia(1);
+%     d(I_i_yy) = robot_model.Bodies{i}.Inertia(2);
+%     d(I_i_zz) = robot_model.Bodies{i}.Inertia(3);
+%     d(I_i_yz) = robot_model.Bodies{i}.Inertia(4);
+%     d(I_i_xz) = robot_model.Bodies{i}.Inertia(5);
+%     d(I_i_xy) = robot_model.Bodies{i}.Inertia(6);
+% end
+% save('./resources/paper_vals1.mat', 'd')
 
 
 % Export robot_model to .urdf

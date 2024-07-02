@@ -5,6 +5,7 @@ clc;
 robot_model = importrobot("./robot_model/kuka-lwr-4plus/model1.urdf"); % Load KUKA LWR 4+
 robot_model.DataFormat = 'column';
 robot_model.Gravity = [0, 0, -9.80665];
+setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
 
 % Compute the direct kinematics
 num_joints = 7;
@@ -31,6 +32,27 @@ nabla_a = matlabFunction(jacobian(A0e(1:3, 4), a));  % (alpha1-6, q1-7)
 nabla_alpha = matlabFunction(jacobian(A0e(1:3, 4), alpha));  % (a2-7, alpha1-6, d2-7, q1-7)
 nabla_d = matlabFunction(jacobian(A0e(1:3, 4), d));  % (alpha1-6, q1-6)
 
+syms q1 q2 q3 q4 q5 q6 q7 real % TODO:
+kuka_lbr_4p_dh_table = [ % a, alpha, d, theta  - retrieved from calibration with urdf model1
+    [0, pi/2,  0.31,  q(1)];
+    [0, -pi/2,  0,  q(2)];
+    [0, -pi/2,  0.4,  q(3)];
+    [0, pi/2,  0,  q(4)];
+    [0, pi/2,  0.39,  q(5)];
+    [0, -pi/2,  0,  q(6)];
+    [0, 0,  0,  q(7)];
+];
+A0e_test = eye(4);
+for i=1:num_joints % TODO:
+    A0e_test = A0e_test * dh_mat_from_table( ...
+        kuka_lbr_4p_dh_table(i, 1), ...
+        kuka_lbr_4p_dh_table(i, 2), ...
+        kuka_lbr_4p_dh_table(i, 3), ...
+        kuka_lbr_4p_dh_table(i, 4) ...
+    );
+end
+A0e_test = matlabFunction(A0e_test(1:3, 4)); % TODO:
+
 
 num_experiments = 15;
 lMax = 20; % Num of iterations
@@ -44,10 +66,16 @@ q_m = (maxLim-minLim).*rand(num_experiments, num_joints) + minLim;
 
 % Get the externally measured e.e. pos for the test configurations
 p = zeros(num_experiments, m);  % e.e. pos corresponding to configurations in q_m
+p_test = zeros(num_experiments, m); % TODO:
 for i=1:num_experiments
     tf = getTransform(robot_model, q_m(i, 1:num_joints)', robot_model.Bodies{8}.Name, robot_model.Bodies{1}.Name);
     p(i, 1:m) = tf(1:3, 4)';
+
+    inp = num2cell(q_m(i, 1:num_joints)); % TODO:
+    p_test(i, 1:m) = A0e_test(inp{1:4}); % TODO:
 end
+err = p - p_test % TODO:
+return;
 
 % Compute l iterations
 % phi_n = [
@@ -60,13 +88,13 @@ d_ind_start = alpha_ind_start + num_joints;
 
 % Set initial guesses
 kuka_lbr_4p_dh_table = [ % a, alpha, d, theta
-        [0, sym(pi)/2,  0,  0];
-        [0, -sym(pi)/2,  0,  0];
-        [0, -sym(pi)/2,  0.4, 0];
-        [0, sym(pi)/2,  0,  0];
-        [0, sym(pi)/2,  0.39, 0];
-        [0, -sym(pi)/2,  0,  0];
-        [0, 0,  0,  0];
+    0, sym(pi)/2,  0,         0
+    0, -sym(pi)/2,  0,         0
+    0, -sym(pi)/2,  0.4,         0
+    0, sym(pi)/2,  0,         0
+    0, sym(pi)/2,  0.39,         0
+    0, -sym(pi)/2,  0,         0
+    0, 0,  0,         0
 ];
 phi_n(a_ind_start:num_joints, 1) = kuka_lbr_4p_dh_table(1:num_joints, 1)';
 phi_n(alpha_ind_start:d_ind_start-1, 1) = kuka_lbr_4p_dh_table(1:num_joints, 2)';
@@ -101,11 +129,11 @@ for l = 1:lMax
     phi_n_cell = num2cell(phi_n);
 
     iterDur = toc;
-    fprintf('l=%d completed\tIterDur: %.2f\tETA: %.2f sec.\terr:%.2f\n', l, iterDur, (lMax-l)*iterDur, norm(delta_r_bar));
+    fprintf('l=%d completed\tIterDur: %.2f\tETA: %.2f sec.\terr:%.6f\n', l, iterDur, (lMax-l)*iterDur, norm(delta_r_bar));
     % fprintf('l=%d completed\tIterDur: %.2f\tETA: %.2f sec.\n', l, iterDur, (lMax-l)*iterDur);
 
-    if norm(delta_r_bar) < 0.0001
-        fprintf("Ended calibration prematurely because the error was < 0.0001");
+    if norm(delta_r_bar) < 1e-7 && phi_n(end-2) == 0 && phi_n(end) == 0 
+        fprintf("Ended calibration prematurely because the error was < 1e-7");
         break;
     end
 end

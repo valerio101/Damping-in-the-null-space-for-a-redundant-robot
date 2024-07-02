@@ -48,9 +48,6 @@ robot_model.DataFormat = 'column';
 robot_model.Gravity = [0, 0, -9.80665];
 setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
 
-% smimport(robot_model);
-% return;
-
 % smimport(robot_model)
 if robot_to_try == "iiwa14"
     open_system('robot_simulink.slx'); % iiwa14

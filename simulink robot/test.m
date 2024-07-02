@@ -60,3 +60,25 @@ end
 % load_system(sfile);
 % Run the simulation:
 % sout = sim(sfile,'StopTime',int2str(T));
+
+
+% Display the trajectory
+syms t real
+radius = 0.5;
+circle_center = [0; 0; 0.4];
+u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
+v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
+T = 10;  % trajectory duration in seconds
+path(t) = circle_center + u_circle_plane*radius*cos((t/T) * (2*pi)) + v_circle_plane*radius*sin((t/T) * (2*pi));
+%path_dot(t) = diff(path, t);
+%path_ddot(t) = diff(path_dot, t);
+
+n = 10;
+omega = linspace(0, T, n);
+data_points = "[";
+for i=1:n-1
+    data_points = data_points + num2str(double(path(omega(i))')) + "; ";
+end
+data_points = data_points + "]";
+
+set_param('lwr_scheme/RobotModel/trajectorySpline', 'DataPoints', data_points);

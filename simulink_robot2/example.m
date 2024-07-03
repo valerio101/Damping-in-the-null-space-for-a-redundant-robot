@@ -5,6 +5,7 @@ robot_model = importrobot("../robot_model/kuka-lwr-4plus/model1.urdf", 'DataForm
 n           = 7; % Number of DOFs
 robot_model.Gravity = [0; 0; -9.80665];
 % robot_model.Gravity = [0; 0; 0];
+setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
 
 %% Simulation parameters
 simulation_time = 10;

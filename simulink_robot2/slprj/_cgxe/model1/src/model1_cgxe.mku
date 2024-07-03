@@ -8,7 +8,7 @@ LD = $(CC)
  
 MODEL  = model1
 TARGET = cgxe
-MODULE_SRCS 	= m_zlVsX1SxkEh1WoTDwpn32F.c
+MODULE_SRCS 	= m_gkyqA4gt7d8YteU89BQC6B.c
 MODEL_SRC	= model1_cgxe.c
 MODEL_REG    = model1_cgxe_registry.c
 MAKEFILE    = model1_cgxe.mku

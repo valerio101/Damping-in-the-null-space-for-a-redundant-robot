@@ -12,6 +12,12 @@
 #include "slccrt.h"
 #include "blas.h"
 #include "collisioncodegen_api.hpp"
+#include "blas.h"
+#include "collisioncodegen_api.hpp"
+#include "blas.h"
+#include "collisioncodegen_api.hpp"
+#include "blas.h"
+#include "collisioncodegen_api.hpp"
 #define rtInf                          (mxGetInf())
 #define rtMinusInf                     (-(mxGetInf()))
 #define rtNaN                          (mxGetNaN())

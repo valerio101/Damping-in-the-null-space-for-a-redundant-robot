@@ -52,6 +52,9 @@ robot_model.DataFormat = 'column';
 robot_model.Gravity = [0, 0, -9.80665];
 % robot_model.Gravity = [0, 0, 0];
 
+% Set a spherical wrist at the end
+setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
+
 % Set robot DH params
 % dhparams = r.kuka_lbr_4p_dh_table;
 % dhparams(:, 4) = zeros(7,1);

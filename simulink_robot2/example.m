@@ -36,7 +36,7 @@ path_ddot = @(t) -u_circle_plane*radius*(2*pi/T)*(2*pi/T)*cos((t/T) * (2*pi)) - 
 
 %% Open the simulink model, simulate it and store the results for plotting purposes
 open('model1.slx');
-out = sim('model1.slx');
+%out = sim('model1.slx');
 save("simulation_results", "out");
 
 %% Plotting the results

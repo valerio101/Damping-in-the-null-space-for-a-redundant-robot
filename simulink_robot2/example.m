@@ -7,6 +7,10 @@ robot_model.Gravity = [0; 0; -9.80665];
 % robot_model.Gravity = [0; 0; 0];
 setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
 
+% Define the torque bounds
+torque_low_bound = -200;
+torque_up_bound = 200;
+
 %% Simulation parameters
 simulation_time = 10;
 q_0             = randn(n, 1); % Initial configuration

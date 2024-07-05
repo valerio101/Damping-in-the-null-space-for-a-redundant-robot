@@ -51,7 +51,6 @@ load("simulation_results.mat");
 
 % Configuration
 f1 = figure; grid on; box on; hold on;
-title("Configuration plot", "FontName", "courier", "FontSize", 14);
 pl = plot(out.q.Time, out.q.Data, "LineWidth", 2);
 pbaspect([2, 1, 1]);
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 14);
@@ -62,12 +61,12 @@ legend([arrayfun(@(i) sprintf('$q_{%d}$', i), 1:n, "UniformOutput", false)'; {'$
         "Interpreter", "latex", ...
        "FontSize", 14, ...
        "NumColumns", 6, ...
-       "Location", "southoutside");
+       "Location", "northoutside");
 
 % Control action
 f2 = figure; grid on; box on; hold on;
 % plot(out.tau.Time, out.tau.Data, "LineWidth", 2);
-title("Torque plot", "FontName", "courier", "FontSize", 14);
+title("Torque plot", "FontName", "courier", "Fo");
 plot(out.tau.Time, reshape(out.tau.Data, 7, size(out.tau.Time, 1))', "LineWidth", 2);
 pbaspect([2, 1, 1]);
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 14);
@@ -76,23 +75,10 @@ legend([arrayfun(@(i) sprintf('$tau_{%d}$', i), 1:n, "UniformOutput", false)'; {
         "Interpreter", "latex", ...
        "FontSize", 14, ...
        "NumColumns", 6, ...
-       "Location", "southoutside");
+       "Location", "northoutside");
 grid on; box on;
 ylim([torque_low_bound-10, torque_up_bound+10]);
 
-% Plot cartesian error
-f3 = figure; grid on; box on; hold on;
-title("Cartesian Error plot", "FontName", "courier", "FontSize", 14);
-plot(out.cart_err.Time, reshape(out.cart_err.Data, 3, size(out.tau.Time, 1))', "LineWidth", 2);
-pbaspect([2, 1, 1]);
-xlabel("Time [s]", "Interpreter", "latex", "FontSize", 14);
-ylabel("Cartesian Error [m]", "Interpreter", "latex", "FontSize", 14);
-legend([arrayfun(@(i) sprintf('$e_{%d}$', i), 1:n, "UniformOutput", false)'; {'$e_{d}$'}], ...
-        "Interpreter", "latex", ...
-       "FontSize", 14, ...
-       "NumColumns", 6, ...
-       "Location", "southoutside");
-grid on; box on;
 
 % Save the figures
 exportgraphics(f1, "./fig/q.pdf");

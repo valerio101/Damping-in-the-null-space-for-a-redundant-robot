@@ -34,6 +34,9 @@ path = @(t) circle_center + u_circle_plane*radius*cos((t/T) * (2*pi)) + v_circle
 path_dot = @(t) -u_circle_plane*radius*(2*pi/T)*sin((t/T) * (2*pi)) + v_circle_plane*radius*(2*pi/T)*cos((t/T) * (2*pi));
 path_ddot = @(t) -u_circle_plane*radius*(2*pi/T)*(2*pi/T)*cos((t/T) * (2*pi)) - v_circle_plane*radius*(2*pi/T)*(2*pi/T)*sin((t/T) * (2*pi));
 
+%% Open the simulink model
+open('model1acc.slx');
+
 % Display the trajectory in Simscape
 n = 10;
 omega = linspace(0, T, n);
@@ -44,8 +47,7 @@ end
 data_points = data_points + "]";
 set_param('model1acc/RobotModel/trajectorySpline', 'DataPoints', data_points);
 
-%% Open the simulink model, simulate it and store the results for plotting purposes
-open('model1acc.slx');
+%% Simulate the simulink model and store the results for plotting purposes
 out = sim('model1acc.slx');
 save("simulation_results", "out");
 

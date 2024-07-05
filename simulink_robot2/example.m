@@ -34,6 +34,9 @@ path = @(t) circle_center + u_circle_plane*radius*cos((t/T) * (2*pi)) + v_circle
 path_dot = @(t) -u_circle_plane*radius*(2*pi/T)*sin((t/T) * (2*pi)) + v_circle_plane*radius*(2*pi/T)*cos((t/T) * (2*pi));
 path_ddot = @(t) -u_circle_plane*radius*(2*pi/T)*(2*pi/T)*cos((t/T) * (2*pi)) - v_circle_plane*radius*(2*pi/T)*(2*pi/T)*sin((t/T) * (2*pi));
 
+%% Open the simulink model
+open('model1.slx');
+
 % Display the trajectory in Simscape
 n = 10;
 omega = linspace(0, T, n);
@@ -44,17 +47,7 @@ end
 data_points = data_points + "]";
 set_param('model1/RobotModel/trajectorySpline', 'DataPoints', data_points);
 
-% Rest-to-rest motion in configuration space
-% [a, b, c, delta_q]  = CubicPolynomial(q_d_start, q_d_end, zeros(n, 1), zeros(n, 1));
-% 
-% % Store the interpolated trajectory as function handle to use in Simulink
-% q_d                 = @(t) q_d_start + delta_q.*(a*(t/simulation_time)^3 + b*(t/simulation_time)^2 + c*t/simulation_time);
-% dq_d                = @(t) (delta_q/simulation_time).*(3*a*(t/simulation_time)^2 + 2*b*(t/simulation_time) + c);
-% ddq_d               = @(t) (delta_q/simulation_time^2).*(6*a*(t/simulation_time) + 2*b);
-
-
-%% Open the simulink model, simulate it and store the results for plotting purposes
-open('model1.slx');
+%% Simulate the simulink model and store the results for plotting purposes
 out = sim('model1.slx');
 save("simulation_results", "out");
 

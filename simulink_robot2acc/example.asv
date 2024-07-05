@@ -9,14 +9,13 @@ robot_model.Gravity = [0; 0; -9.80665];
 % robot_model.Gravity = [0; 0; 0];
 setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
 
-% Define the torque bounds
-torque_low_bound = -60;
-torque_up_bound = 80;
+% Define the acceleration bounds
+acc_up_bound = +20;
+acc_low_bound = -20;
 
 %% Simulation parameters
 simulation_time = 10;
-q_0             = zeros(n, 1); % Initial configuration
-q_0(4, 1) = pi/2;
+q_0             = randn(n, 1); % Initial configuration
 dq_0            = zeros(n, 1); % Initial velocity
 
 %% Define a joint trajectory as a cubic spline from q_start to q_end with zero velocities
@@ -32,25 +31,16 @@ path = @(t) circle_center + u_circle_plane*radius*cos((t/T) * (2*pi)) + v_circle
 path_dot = @(t) -u_circle_plane*radius*(2*pi/T)*sin((t/T) * (2*pi)) + v_circle_plane*radius*(2*pi/T)*cos((t/T) * (2*pi));
 path_ddot = @(t) -u_circle_plane*radius*(2*pi/T)*(2*pi/T)*cos((t/T) * (2*pi)) - v_circle_plane*radius*(2*pi/T)*(2*pi/T)*sin((t/T) * (2*pi));
 
-% Rest-to-rest motion in configuration space
-% [a, b, c, delta_q]  = CubicPolynomial(q_d_start, q_d_end, zeros(n, 1), zeros(n, 1));
-% 
-% % Store the interpolated trajectory as function handle to use in Simulink
-% q_d                 = @(t) q_d_start + delta_q.*(a*(t/simulation_time)^3 + b*(t/simulation_time)^2 + c*t/simulation_time);
-% dq_d                = @(t) (delta_q/simulation_time).*(3*a*(t/simulation_time)^2 + 2*b*(t/simulation_time) + c);
-% ddq_d               = @(t) (delta_q/simulation_time^2).*(6*a*(t/simulation_time) + 2*b);
-
-
 %% Open the simulink model, simulate it and store the results for plotting purposes
-open('model1.slx');
-out = sim('model1.slx');
+open('model1acc.slx');
+out = sim('model1acc.slx');
 save("simulation_results", "out");
 
 %% Plotting the results
 load("simulation_results.mat");
 
-% Configuration
 f1 = figure; grid on; box on; hold on;
+title("Configuration plot", "FontName", "courier", "FontSize", 14);
 pl = plot(out.q.Time, out.q.Data, "LineWidth", 2);
 pbaspect([2, 1, 1]);
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 14);
@@ -61,36 +51,48 @@ legend([arrayfun(@(i) sprintf('$q_{%d}$', i), 1:n, "UniformOutput", false)'; {'$
         "Interpreter", "latex", ...
        "FontSize", 14, ...
        "NumColumns", 6, ...
-       "Location", "northoutside");
+       "Location", "southoutside");
 
 % Control action
 f2 = figure; grid on; box on; hold on;
-% plot(out.tau.Time, out.tau.Data, "LineWidth", 2);
-title("Torque plot", "FontName", "courier", "Fo");
+title("Joint Acceleration plot", "FontName", "courier", "FontSize", 14);
 plot(out.tau.Time, reshape(out.tau.Data, 7, size(out.tau.Time, 1))', "LineWidth", 2);
 pbaspect([2, 1, 1]);
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 14);
-ylabel("Torque [Nm]", "Interpreter", "latex", "FontSize", 14);
-legend([arrayfun(@(i) sprintf('$tau_{%d}$', i), 1:n, "UniformOutput", false)'; {'$tau_{d}$'}], ...
+ylabel("Joint Acceleration [$\fract{rad, s^2}$]", "Interpreter", "latex", "FontSize", 14);
+legend([arrayfun(@(i) sprintf('$\ddot{q_{%d}}$', i), 1:n, "UniformOutput", false)'; {'$\ddtau_{d}$'}], ...
         "Interpreter", "latex", ...
        "FontSize", 14, ...
        "NumColumns", 6, ...
-       "Location", "northoutside");
+       "Location", "southoutside");
 grid on; box on;
 ylim([torque_low_bound-10, torque_up_bound+10]);
+
+% Plot cartesian error
+f3 = figure; grid on; box on; hold on;
+title("Cartesian Error plot", "FontName", "courier", "FontSize", 14);
+plot(out.cart_err.Time, reshape(out.cart_err.Data, 3, size(out.tau.Time, 1))', "LineWidth", 2);
+pbaspect([2, 1, 1]);
+xlabel("Time [s]", "Interpreter", "latex", "FontSize", 14);
+ylabel("Cartesian Error [m]", "Interpreter", "latex", "FontSize", 14);
+legend([arrayfun(@(i) sprintf('$e_{%d}$', i), 1:n, "UniformOutput", false)'; {'$e_{d}$'}], ...
+        "Interpreter", "latex", ...
+       "FontSize", 14, ...
+       "NumColumns", 6, ...
+       "Location", "southoutside");
+grid on; box on;
 
 
 % Save the figures
 exportgraphics(f1, "./fig/q.pdf");
-exportgraphics(f2, "./fig/u.pdf");
-
+exportgraphics(f2, "./fig/acc.pdf");
 
 % Display the trajectory in Simscape
-% n = 10;
-% omega = linspace(0, T, n);
-% data_points = "[";
-% for i=1:n-1
-%     data_points = data_points + num2str(double(path(omega(i))')) + "; ";
-% end
-% data_points = data_points + "]";
-% set_param('lwr_scheme/RobotModel/trajectorySpline', 'DataPoints', data_points);
+n = 10;
+omega = linspace(0, T, n);
+data_points = "[";
+for i=1:n-1
+    data_points = data_points + num2str(double(path(omega(i))')) + "; ";
+end
+data_points = data_points + "]";
+set_param('lwr_scheme/RobotModel/trajectorySpline', 'DataPoints', data_points);

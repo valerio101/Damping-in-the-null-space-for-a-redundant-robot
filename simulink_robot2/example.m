@@ -25,12 +25,24 @@ dq_0            = zeros(n, 1); % Initial velocity
 % syms t real
 radius = 0.5;
 circle_center = [0; 0; 0.4];
-u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
-v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
+% u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
+% v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
+u_circle_plane = [sqrt(2)/2; 0; sqrt(2)/2];  % must be unit vec and orth to v
+v_circle_plane = [0; sqrt(2)/2; sqrt(2)/2];  % must be unit vec and orth to u
 T = simulation_time;  % trajectory duration in seconds
 path = @(t) circle_center + u_circle_plane*radius*cos((t/T) * (2*pi)) + v_circle_plane*radius*sin((t/T) * (2*pi));
 path_dot = @(t) -u_circle_plane*radius*(2*pi/T)*sin((t/T) * (2*pi)) + v_circle_plane*radius*(2*pi/T)*cos((t/T) * (2*pi));
 path_ddot = @(t) -u_circle_plane*radius*(2*pi/T)*(2*pi/T)*cos((t/T) * (2*pi)) - v_circle_plane*radius*(2*pi/T)*(2*pi/T)*sin((t/T) * (2*pi));
+
+% Display the trajectory in Simscape
+n = 10;
+omega = linspace(0, T, n);
+data_points = "[";
+for i=1:n-1
+    data_points = data_points + num2str(double(path(omega(i))')) + "; ";
+end
+data_points = data_points + "]";
+set_param('model1/RobotModel/trajectorySpline', 'DataPoints', data_points);
 
 % Rest-to-rest motion in configuration space
 % [a, b, c, delta_q]  = CubicPolynomial(q_d_start, q_d_end, zeros(n, 1), zeros(n, 1));
@@ -97,14 +109,4 @@ grid on; box on;
 % Save the figures
 exportgraphics(f1, "./fig/q.pdf");
 exportgraphics(f2, "./fig/u.pdf");
-
-
-% Display the trajectory in Simscape
-% n = 10;
-% omega = linspace(0, T, n);
-% data_points = "[";
-% for i=1:n-1
-%     data_points = data_points + num2str(double(path(omega(i))')) + "; ";
-% end
-% data_points = data_points + "]";
-% set_param('lwr_scheme/RobotModel/trajectorySpline', 'DataPoints', data_points);
+exportgraphics(f3, "./fig/cart_err.pdf");

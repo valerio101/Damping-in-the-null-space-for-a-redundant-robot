@@ -10,8 +10,8 @@ robot_model.Gravity = [0; 0; -9.80665];
 setFixedTransform(robot_model.Bodies{8}.Joint, eye(4));
 
 % Define the torque bounds
-torque_low_bound = -1000;
-torque_up_bound = 1000;
+torque_low_bound = -80;
+torque_up_bound = 80;
 
 %% Simulation parameters
 simulation_time = 10;
@@ -21,9 +21,9 @@ dq_0            = zeros(n, 1); % Initial velocity
 
 %% Define a joint trajectory as a cubic spline from q_start to q_end with zero velocities
 radius = 0.3;
-circle_center = [-0.4; -0.4; 0.4];
-u_circle_plane = [1; 0; 0];  % must be unit vec and orth to v
-v_circle_plane = [0; 1; 0];  % must be unit vec and orth to u
+circle_center = [0.3; 0; 0.3];
+u_circle_plane = [sqrt(2)/2; 0; sqrt(2)/2];  % must be unit vec and orth to v
+v_circle_plane = [0; sqrt(2)/2; sqrt(2)/2];  % must be unit vec and orth to u
 
 % radius = 0.5;
 % circle_center = [0; 0; 0.4];
@@ -118,6 +118,15 @@ exportgraphics(f1, "./fig/qBound25km.pdf");
 exportgraphics(f2, "./fig/uBound25km.pdf");
 exportgraphics(f3, "./fig/trackingBound25km.pdf");
 exportgraphics(f4, "./fig/dqBound25km.pdf");
+% base_path = "./fig/";
+% base_name1 = "trajectories_torque";
+% % base_name2 = repmat('_10', 1, 4);
+% base_name2 = "_obl";
+% base_name3 = "_momdamp";
+% exportgraphics(f1, base_path + base_name1 + base_name2 + base_name3 + "_q.pdf");
+% exportgraphics(f2, base_path + base_name1 + base_name2 + base_name3 + "_u.pdf");
+% exportgraphics(f3, base_path + base_name1 + base_name2 + base_name3 + "_cart_pos.pdf");
+% exportgraphics(f4, base_path + base_name1 + base_name2 + base_name3 + "_dq.pdf");
 
 
 %%

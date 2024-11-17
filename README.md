@@ -1,9 +1,9 @@
-In questo progetto abbiamo studiato e simulato il comportamento del **Kuka LWR4** nell'inseguimento di una traiettoria circolare, utilizzando diversi tipi di damping. In particolare, sono stati considerati tre casi: **no damping**, **velocity damping** e **momentum damping**.
+In this project, we studied and simulated the behavior of the **Kuka LWR4** in tracking a circular trajectory using different types of damping. Specifically, three cases were considered: **no damping**, **velocity damping**, and **momentum damping**.
 
-+ **simulation_robot2:** In questa cartella si trova il file **example**, che contiene il codice per configurare il robot e la traiettoria iniziale. Qui vengono generati e visualizzati grafici relativi alla velocità dei giunti, alla coppia (torque), alla posizione dei giunti e all'inseguimento della traiettoria. Inoltre, il file **model1** contiene il modello Simulink del robot e il controllo di torque utilizzato nel sistema.
++ **simulation_robot2**: This folder contains the **example** file, which includes the code to configure the robot and the initial trajectory. It generates and displays joint velocity, torque, position, and trajectory tracking graphs. Additionally, the **model1** file contains the robot's Simulink model and the torque control used in the system.
 
-+ **simulation_robot2acc:** In questa cartella si trova il file **example**, che fornisce il codice per configurare il robot e la traiettoria iniziale. Vengono generati grafici relativi alla velocità dei giunti, all'accelerazione, alla posizione dei giunti e all'inseguimento della traiettoria. Il file **model1acc** contiene il modello Simulink del robot e il controllo di accelerazione utilizzato.
++ **simulation_robot2acc**: This folder contains the **example** file, which provides the code to configure the robot and the initial trajectory. It generates joint velocity, acceleration, position, and trajectory tracking graphs. The **model1acc** file contains the robot's Simulink model and the acceleration control used.
 
-+ **HW_Robotics_II:** Questo paper riassume la teoria di base necessaria per comprendere il progetto, con una parte finale che descrive le diverse simulazioni effettuate per analizzare i comportamenti del robot.
++ **HW_Robotics_II:** This document summarizes the basic theory needed to understand the project, with a final section describing the various simulations performed to analyze the robot's behavior.
 
-+ **Videos:** La cartella contiene vari video relativi a diverse simulazioni, con differenti parametri di guadagno, l'aggiunta di vincoli su accelerazione o coppia (torque), e simulazioni con traiettorie differenti.
++ **Videos:** This folder contains several videos related to different simulations, with varying gain parameters, the addition of constraints on acceleration or torque, and simulations with different trajectories.
